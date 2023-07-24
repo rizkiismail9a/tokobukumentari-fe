@@ -1,7 +1,13 @@
 <template>
-  <NavBar />
+  <NavBar @cari-buku="searchBook" />
   <div class="container max-width m-auto row p-4">
-    <div class="col-md-3 mb-2" v-for="(book, i) in books" :key="book.title">
+    <div class="container max-width m-auto noBook" v-if="noBook === true">
+      <div class="container text-center d-flex flex-column justify-content-center">
+        <h1>Belum punya buku itu 🥲</h1>
+        <router-link to="/">&leftarrow; Kembali ke Beranda</router-link>
+      </div>
+    </div>
+    <div class="col-md-3 mb-2" v-if="noBook === false" v-for="(book, i) in books" :key="book.title">
       <div class="card card-product rounded p-4 book__card h-100">
         <a class="position-absolute link-to-detail" href="#"></a>
         <img class="book__card-img object-fit-contain object-fit-cover mb-3 rounded" :src="'/images/' + book.file" :alt="book.title" />
@@ -22,6 +28,7 @@ export default {
   data() {
     return {
       books: [],
+      noBook: false,
     };
   },
   components: {
@@ -31,15 +38,44 @@ export default {
     addLikes(index) {
       this.books[index].likes == 1 ? this.books[index].likes : this.books[index].likes++;
     },
+    searchBook(setKeyword) {
+      axios
+        .get("https://my-json-server.typicode.com/rizkiismail9a/tokobukumentari-fakeAPI/books?q=" + setKeyword)
+        .then((res) => {
+          let results = res.data;
+          this.books = results;
+          if (results.length === 0) {
+            this.noBook = true;
+          } else {
+            this.noBook = false;
+          }
+        })
+        .catch((err) => console.log(err));
+    },
   },
   mounted() {
-    axios
-      .get("https://my-json-server.typicode.com/rizkiismail9a/tokobukumentari-fakeAPI/books")
-      .then((res) => {
-        this.books = res.data;
-        console.log(this.books);
-      })
-      .catch((err) => console.log(err));
+    if (this.$route.query.keyword) {
+      axios
+        .get("https://my-json-server.typicode.com/rizkiismail9a/tokobukumentari-fakeAPI/books?q=" + this.$route.query.keyword)
+        .then((res) => {
+          this.books = res.data;
+          // console.log(this.books);
+        })
+        .catch((err) => console.log(err));
+    } else {
+      axios
+        .get("https://my-json-server.typicode.com/rizkiismail9a/tokobukumentari-fakeAPI/books")
+        .then((res) => {
+          this.books = res.data;
+          // console.log(this.books);
+        })
+        .catch((err) => console.log(err));
+    }
   },
 };
 </script>
+<style scoped>
+.noBook {
+  min-height: 90vh;
+}
+</style>

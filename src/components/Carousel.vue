@@ -35,7 +35,9 @@ export default {
 };
 </script>
 <style scoped>
-.carousel-item {
-  z-index: -1 !important;
+.carousel-item,
+.carousel-control-prev,
+.carousel-control-next {
+  z-index: 1 !important;
 }
 </style>

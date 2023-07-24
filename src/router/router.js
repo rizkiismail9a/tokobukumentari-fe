@@ -14,10 +14,25 @@ const router = createRouter({
       component: () => import("../views/Collection.vue"),
     },
     // {
-    //   path: "/koleksi/:kategori",
-    //   name: "Koleksi | Toko Buku Mentari",
-    //   component: () => import("../views/Collection.vue"),
+    //   path: "/koleksi/:keyword",
+    //   name: "Temukan Koleksi | Toko Buku Mentari",
+    //   component: () => import("../views/SearchCollection.vue"),
     // },
+    {
+      path: "/login",
+      name: "Masuk | Toko Buku Mentari",
+      component: () => import("../views/Login.vue"),
+    },
+    {
+      path: "/register",
+      name: "Daftar | Toko Buku Mentari",
+      component: () => import("../views/Register.vue"),
+    },
+    {
+      path: "/:pathMatch(.*)*",
+      name: "Laman Tidak Ada",
+      component: () => import("../views/NotFound.vue"),
+    },
   ],
 });
 router.beforeEach((to) => {

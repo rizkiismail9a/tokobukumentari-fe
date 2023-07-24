@@ -1,6 +1,6 @@
 <template>
   <div class="footer__wrapper bg-secondary p-3">
-    <div class="container max-width row footer-menu m-auto flex-column flex-md-row">
+    <div class="container max-width row footer-menu m-auto flex-column flex-md-row mt-3">
       <div class="col-md-3 mx-auto footer-menu-jargon">
         <h1 class="fs-5 text-light">Kedai Buku <span class="font-pink">Gajah</span><br />Kedai Buku Serba Ada</h1>
         <p class="text-light">Kami menyediakan buku dengan berbagai genre dari berbagai zaman!</p>
@@ -33,6 +33,8 @@
         </div>
       </div>
     </div>
+    <hr />
+    <p class="text-light text-center">&copy; 2023 senimentari group</p>
   </div>
 </template>
 <script>
