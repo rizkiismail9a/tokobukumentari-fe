@@ -1,0 +1,65 @@
+:root {
+  --main-color: #ff3a5c;
+  --secondary-color: #771c2b;
+  --shadow: 2px 3px 8px rgb(212, 212, 212);
+  --secondary-shadow: 2px 3px 8px rgb(255, 255, 255);
+}
+.font-pink {
+  color: var(--main-color);
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Varela Round", sans-serif;
+}
+body {
+  background-color: #eee;
+  min-height: 100vh;
+}
+.max-width {
+  max-width: 1000px;
+}
+a {
+  text-decoration: none;
+}
+ul {
+  list-style: none;
+}
+.form-control:focus {
+  color: var(--bs-body-color);
+  background-color: var(--bs-body-bg);
+  border-color: var(--main-color);
+  outline: 3px solid var(--main-color);
+  box-shadow: none;
+}
+.btn-primary {
+  --bs-btn-color: #fff;
+  --bs-btn-bg: var(--main-color);
+  --bs-btn-border-color: var(--main-color);
+  --bs-btn-hover-color: #fff;
+  --bs-btn-hover-bg: var(--secondary-color);
+  --bs-btn-hover-border-color: unset;
+  --bs-btn-focus-shadow-rgb: 49, 132, 253;
+  --bs-btn-active-color: #fff;
+  --bs-btn-active-bg: var(--secondary-color);
+  --bs-btn-active-border-color: var(--secondary-color);
+  --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+  --bs-btn-disabled-color: #fff;
+  --bs-btn-disabled-bg: var(--main-color);
+  --bs-btn-disabled-border-color: var(--main-color);
+}
+.card {
+  box-shadow: var(--shadow);
+}
+.link-to-detail {
+  display: block;
+  cursor: pointer;
+  width: 80%;
+  height: 50%;
+  z-index: 2;
+}
+.book__card-img {
+  min-height: 50%;
+  box-shadow: var(--shadow);
+}
