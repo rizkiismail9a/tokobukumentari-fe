@@ -13,11 +13,6 @@ const router = createRouter({
       name: "Koleksi | Toko Buku Mentari",
       component: () => import("../views/Collection.vue"),
     },
-    // {
-    //   path: "/koleksi/:keyword",
-    //   name: "Temukan Koleksi | Toko Buku Mentari",
-    //   component: () => import("../views/SearchCollection.vue"),
-    // },
     {
       path: "/login",
       name: "Masuk | Toko Buku Mentari",
@@ -27,6 +22,11 @@ const router = createRouter({
       path: "/register",
       name: "Daftar | Toko Buku Mentari",
       component: () => import("../views/Register.vue"),
+    },
+    {
+      path: "/detailBuku",
+      name: "Detail Buku | Toko Buku Mentari",
+      component: () => import("../views/BookDetail.vue"),
     },
     {
       path: "/:pathMatch(.*)*",
