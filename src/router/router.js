@@ -34,6 +34,11 @@ const router = createRouter({
       component: () => import("../views/Profile.vue"),
     },
     {
+      path: "/keranjang",
+      name: "Keranjang | Toko Buku Mentari",
+      component: () => import("../views/CartPage.vue"),
+    },
+    {
       path: "/:pathMatch(.*)*",
       name: "Laman Tidak Ada",
       component: () => import("../views/NotFound.vue"),

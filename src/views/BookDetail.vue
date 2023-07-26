@@ -1,6 +1,8 @@
 <template>
   <NavBar />
-  <Modal modalMsg="Buku berhasil meluncur ke keranjang!" v-if="$store.state.isModalActive" />
+  <Transition>
+    <Modal modalMsg="Buku berhasil meluncur ke keranjang!" v-if="$store.state.isModalActive" />
+  </Transition>
   <main class="container my-5 m-auto p-3 card">
     <div class="row">
       <div class="col-lg-8 book-img-wrapper">
@@ -152,5 +154,15 @@ export default {
 table,
 td {
   border: 2px solid rgba(206, 204, 204, 0.552);
+}
+
+.v-enter-active,
+.v-leave-active {
+  transition: opacity 0.2s;
+}
+
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
 }
 </style>

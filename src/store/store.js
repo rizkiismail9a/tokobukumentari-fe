@@ -2,7 +2,7 @@ import { createStore } from "vuex";
 const store = createStore({
   state() {
     return {
-      carts: [],
+      carts: new Set(),
       itemsAmount: 0,
       isModalActive: false,
       isAnimationShow: false,
@@ -12,8 +12,8 @@ const store = createStore({
     addToCarts(state, data) {
       state.isModalActive = true;
       state.itemsAmount++;
-      state.carts.push(data);
-      console.log(state.carts);
+      state.carts.add(data);
+      console.log("ada");
     },
   },
 });

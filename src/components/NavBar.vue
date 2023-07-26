@@ -53,7 +53,7 @@
             </li>
           </ul>
         </div>
-        <a class="cart mx-2 d-flex align-items-center">
+        <a href="/keranjang" class="cart mx-2 d-flex align-items-center">
           {{ $store.state.itemsAmount }}
           <i class="fa-solid fa-cart-shopping navbar__list-link font-pink"></i>
         </a>
