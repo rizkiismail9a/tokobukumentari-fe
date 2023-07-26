@@ -14,7 +14,7 @@
       <div class="card p-3">
         <h1 class="fs-6 text-secondary">Edit Profile</h1>
         <img v-if="profileImg" :src="profileImg" alt="" class="rounded-circle border" style="width: 150px" />
-        <img v-else src="images/profile-photo.png" alt="" class="rounded-circle border" style="width: 150px" />
+        <img v-else src="/images/profile-photo.png" alt="" class="rounded-circle border" style="width: 150px" />
         <form>
           <div class="mt-4 d-flex gap-2">
             <label for="formFile" class="form-label"></label>
