@@ -5,6 +5,7 @@
       <a class="fs-5 font-pink" href="/koleksi">Lihat Semua</a>
     </div>
     <div class="row">
+      <img v-if="$store.state.isAnimationShow" src="/images/loading.gif" class="w-25 m-auto" />
       <div class="col-md-3" v-for="(book, i) in bestSellings" :key="book.title">
         <div class="card card-product rounded p-4 book__card h-100">
           <!-- <a class="position-absolute link-to-detail" href="#"></a> -->
@@ -51,10 +52,12 @@ export default {
     },
   },
   mounted() {
+    this.$store.state.isAnimationShow = true;
     axios
       .get("https://my-json-server.typicode.com/rizkiismail9a/tokobukumentari-fakeAPI/bestSelling")
-      .then((res) => {
-        this.bestSellings = res.data;
+      .then(async (res) => {
+        this.bestSellings = await res.data;
+        this.$store.state.isAnimationShow = false;
       })
       .catch((err) => console.log(err));
   },

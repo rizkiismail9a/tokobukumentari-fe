@@ -1,5 +1,6 @@
 <template>
   <NavBar />
+  <Modal modalMsg="Buku berhasil meluncur ke keranjang!" v-if="$store.state.isModalActive" />
   <main class="container my-5 m-auto p-3 card">
     <div class="row">
       <div class="col-lg-8 book-img-wrapper">
@@ -67,7 +68,7 @@
           <hr />
           <div class="btn-container d-flex flex-column gap-2">
             <a class="btn btn-primary" href="#">Beli Sekarang</a>
-            <a class="btn btn-outline-primary" href="#">Masuk Keranjang</a>
+            <a class="btn btn-outline-primary" href="#" @click="$store.commit('addToCarts', bookOnDetail)">Masuk Keranjang</a>
           </div>
         </div>
       </div>
@@ -78,11 +79,12 @@
     <div class="alert container max-width m-auto" v-if="alert === true">
       <div class="alert alert-danger w-50 text-center m-auto my-0" role="alert">Komentar tidak boleh kosong</div>
     </div>
-    <div action="" class="d-flex flex-column comment-input-wrapper">
+    <div class="d-flex flex-column comment-input-wrapper">
       <label for="comment-input">Tulis komentar</label>
       <div class="d-flex gap-1" id="comment-input-wrapper">
-        <textarea name="comment" id="comment-input" class="w-75" style="resize: none"></textarea>
-        <button type="submit" class="btn btn-primary w-25" id="btnSubmit" @click="addComment">Kirim komen</button>
+        <textarea name="comment" id="comment-input" class="w-75" style="resize: none" v-model="commentValue"></textarea>
+        <button v-if="isBtnCommentActive" type="submit" class="btn btn-primary w-25" id="btnSubmit" @click="updateComment">Edit Komentar</button>
+        <button v-else type="submit" class="btn btn-primary w-25" id="btnSubmit" @click="addComment">Kirim Komentar</button>
       </div>
     </div>
     <hr />
@@ -102,26 +104,31 @@
 </template>
 <script>
 import NavBar from "../components/NavBar.vue";
+import Modal from "../components/Modal.vue";
 export default {
   data() {
     return {
       comments: [],
+      commentValue: "",
+      bookOnDetail: this.$route.query,
       alert: false,
+      isBtnCommentActive: false,
+      activeCommentIndex: null,
     };
   },
   components: {
     NavBar,
+    Modal,
   },
   mounted() {
     this.comments = this.$route.query.comments;
   },
   methods: {
     addComment() {
-      let textArea = document.getElementById("comment-input");
-      if (textArea) {
+      if (this.commentValue) {
         this.alert = false;
-        this.comments.push(textArea.value);
-        textArea.value = "";
+        this.comments.push(this.commentValue);
+        this.commentValue = "";
       } else {
         this.alert = true;
       }
@@ -130,26 +137,13 @@ export default {
       this.comments.splice(index, 1);
     },
     editComment(index) {
-      console.log(index);
-      document.getElementById("btnSubmit").style.display = "none";
-      let textArea = document.getElementById("comment-input");
-      let newBtn = document.createElement("button");
-      newBtn.classList.add("btn");
-      newBtn.classList.add("btn-primary");
-      newBtn.classList.add("w-25");
-      newBtn.setAttribute("id", "btnEdit");
-      newBtn.setAttribute("v-on:click", `updateComment(${index})`);
-      newBtn.innerHTML = "Edit Komentar";
-      let inputWrapper = document.getElementById("comment-input-wrapper");
-      inputWrapper.appendChild(newBtn);
-      textArea.value = this.comments[index];
-      // this.comments.splice(index, 1);
+      this.isBtnCommentActive = true;
+      this.commentValue = this.comments[index];
     },
     updateComment(index) {
-      document.getElementById("btnEdit").remove();
-      document.getElementById("btnSubmit").style.display = "block";
-      const newData = document.getElementById("comment-input").value;
-      this.comments.splice(index, 1, newData);
+      this.isBtnCommentActive = false;
+      this.comments.splice(index, 1, this.commentValue);
+      this.commentValue = "";
     },
   },
 };

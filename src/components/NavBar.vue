@@ -53,8 +53,12 @@
             </li>
           </ul>
         </div>
-        <i class="fa-solid fa-cart-shopping navbar__list-link font-pink mx-2"></i>
-        <a href="/login" class="btn btn-primary mx-2">Masuk</a>
+        <a class="cart mx-2 d-flex align-items-center">
+          {{ $store.state.itemsAmount }}
+          <i class="fa-solid fa-cart-shopping navbar__list-link font-pink"></i>
+        </a>
+        <!-- <a href="/login" class="btn btn-primary mx-2">Masuk</a> -->
+        <a href="/profil" class="font-pink"><i class="fa-solid fa-user"></i></a>
       </div>
     </div>
   </div>

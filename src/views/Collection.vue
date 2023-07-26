@@ -7,6 +7,7 @@
         <router-link to="/">&leftarrow; Kembali ke Beranda</router-link>
       </div>
     </div>
+    <img v-if="$store.state.isAnimationShow" src="/images/loading.gif" class="w-25 m-auto" />
     <div class="col-md-3 mb-2" v-if="noBook === false" v-for="(book, i) in books" :key="book.title">
       <div class="card card-product rounded p-4 book__card h-100">
         <img class="book__card-img object-fit-contain object-fit-cover mb-3 rounded" :src="'/images/' + book.file" :alt="book.title" />
@@ -46,6 +47,7 @@ export default {
     return {
       books: [],
       noBook: false,
+      isAnimationShow: false,
     };
   },
   components: {
@@ -71,20 +73,22 @@ export default {
     },
   },
   mounted() {
+    this.$store.state.isAnimationShow = true;
     if (this.$route.query.keyword) {
       axios
         .get("https://my-json-server.typicode.com/rizkiismail9a/tokobukumentari-fakeAPI/books?q=" + this.$route.query.keyword)
-        .then((res) => {
-          this.books = res.data;
+        .then(async (res) => {
+          this.books = await res.data;
+          this.$store.state.isAnimationShow = false;
           // console.log(this.books);
         })
         .catch((err) => console.log(err));
     } else {
       axios
         .get("https://my-json-server.typicode.com/rizkiismail9a/tokobukumentari-fakeAPI/books")
-        .then((res) => {
-          this.books = res.data;
-          // console.log(this.books);
+        .then(async (res) => {
+          this.books = await res.data;
+          this.$store.state.isAnimationShow = false;
         })
         .catch((err) => console.log(err));
     }
