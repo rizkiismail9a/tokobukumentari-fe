@@ -139,12 +139,13 @@ export default {
       this.comments.splice(index, 1);
     },
     editComment(index) {
+      this.activeCommentIndex = index;
       this.isBtnCommentActive = true;
       this.commentValue = this.comments[index];
     },
-    updateComment(index) {
+    updateComment() {
       this.isBtnCommentActive = false;
-      this.comments.splice(index, 1, this.commentValue);
+      this.comments.splice(this.activeCommentIndex, 1, this.commentValue);
       this.commentValue = "";
     },
   },
@@ -158,7 +159,7 @@ td {
 
 .v-enter-active,
 .v-leave-active {
-  transition: opacity 0.2s;
+  transition: all 0.2s;
 }
 
 .v-enter-from,
