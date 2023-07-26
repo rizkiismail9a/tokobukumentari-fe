@@ -1,7 +1,7 @@
 <template>
   <div class="bg-body-secondary">
     <div class="max-width row navbar m-auto">
-      <img class="col-md-4 m-auto navbar__logo object-fit-contain" src="/images/logo.png" style="width: 300px" />
+      <img class="col-md-4 m-auto navbar__logo object-fit-contain" src="/images/logo.webp" style="width: 300px" />
       <i class="fa-solid fa-bars d-block d-sm-none fs-1 text-center font-pink mb-3" @click="hamburgerBtn()" style="cursor: pointer"></i>
       <div class="col-md-8 navbar__list d-flex align-items-center flex-column flex-md-row hamburger-menu">
         <a href="/"><i class="fa-solid fa-house font-pink mx-2 navbar__list-link"></i></a>

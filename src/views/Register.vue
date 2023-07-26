@@ -3,7 +3,7 @@
   <div class="container max-width my-5">
     <div class="row">
       <div class="reg_jargon col-md-6">
-        <img class="object-fit-contain w-100" src="/images/daftar.png" alt="orang masuk ke pintu" />
+        <img class="object-fit-contain w-100" src="/images/daftar.webp" alt="orang masuk ke pintu" />
         <h2 style="text-align: justify">
           Tak kenal, maka tak sayang <br />
           Yuk, daftar! <br />

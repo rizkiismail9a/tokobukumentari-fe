@@ -10,7 +10,7 @@
         }"
         class="text-center d-block cetagories-card rounded text-white my-2 py-2"
       >
-        <img class="w-75 object-fit-cover m-auto rounded" src="/images/baru.png" alt="link ke buku baru" />
+        <img class="w-75 object-fit-cover m-auto rounded" src="/images/baru.webp" alt="link ke buku baru" />
         <p class="m-0">Buku Baru</p>
       </router-link>
     </div>

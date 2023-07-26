@@ -17,7 +17,7 @@
       <div class="col-md-8 bg-white item-desc-wrapper py-4">
         <div class="row p-2">
           <div class="col-md-3 text-center">
-            <img src="/images/sagaras.jpg" alt="" class="w-50 object-fit-cover" />
+            <img src="/images/sagaras.webp" alt="" class="w-50 object-fit-cover" />
             <p class="fw-bold">Sagaras <br /><small class="text-body-secondary">Tere Liye</small></p>
           </div>
           <div class="col-md-3 text-center">

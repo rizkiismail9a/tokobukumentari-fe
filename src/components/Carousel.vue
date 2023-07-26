@@ -8,7 +8,7 @@
               <h1 class="">Kedai Buku <span class="font-pink">Gajah</span><br />Kedai Buku Serba Ada</h1>
               <p>Kami menyediakan buku dengan berbagai genre dari berbagai zaman!</p>
             </div>
-            <img src="/images/MentariReading.png" class="d-block w-50 object-fit-contain" alt="..." />
+            <img src="/images/mentarireading.webp" class="d-block w-50 object-fit-contain" alt="..." />
           </div>
         </div>
         <div class="carousel-item">

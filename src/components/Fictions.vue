@@ -5,6 +5,11 @@
       <a class="fs-5 font-pink" href="/koleksi">Lihat Semua</a>
     </div>
     <div class="row">
+      <div class="col-md-4 row">
+        <div class="card card-product rounded p-4 book__card h-100 col">
+          <img src="/images/dream.webp" class="w-100 object-fit-contain" alt="" />
+        </div>
+      </div>
       <div class="col-md-8">
         <div class="row">
           <div class="col-md-4" v-for="(book, i) in fictions" :key="book.title">
@@ -35,11 +40,6 @@
               <p class="text-end m-0" id="like-button">{{ book.likes }} <i @click="addLikes(i)" class="fa-regular fa-heart fs-6 font-pink"></i></p>
             </div>
           </div>
-        </div>
-      </div>
-      <div class="col-md-4 row">
-        <div class="card card-product rounded p-4 book__card h-100 col">
-          <img src="/images/dream.png" class="w-100 object-fit-contain" alt="" />
         </div>
       </div>
     </div>

@@ -2,7 +2,7 @@
   <SimpleHeader />
   <div class="container max-width my-5">
     <div class="row">
-      <img class="col-md-6 object-fit-contain" src="/images/login.png" alt="orang masuk ke pintu" />
+      <img class="col-md-6 object-fit-contain" src="/images/login.webp" alt="orang masuk ke pintu" />
       <div class="col-md-6 card p-3 m-auto my-3" style="width: 24rem">
         <h1 class="fs-3">Masuk</h1>
         <p class="m-0">Belum punya akun? Yuk, <a href="/register">daftar</a></p>

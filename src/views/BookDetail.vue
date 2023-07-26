@@ -16,10 +16,10 @@
                 <img src="/images/Sirkus-Pohon-Belakang-600x890.jpg" alt="sirkuspohon" class="w-100 h-100 object-fit-cover" />
               </div>
               <div class="col-6">
-                <img src="/images/badut.jpg" alt="sirkuspohon" class="w-100 h-100 object-fit-cover" />
+                <img src="/images/badut.webp" alt="sirkuspohon" class="w-100 h-100 object-fit-cover" />
               </div>
               <div class="col-6">
-                <img src="/images/daftarisi.jpg" alt="sirkuspohon" class="w-100 object-fit-cover" />
+                <img src="/images/daftarisi.webp" alt="sirkuspohon" class="w-100 object-fit-cover" />
               </div>
               <div class="col-6">
                 <img :src="'/images/' + $route.query.file" alt="sirkuspohon" class="w-100 h-100 object-fit-cover" />
@@ -92,7 +92,7 @@
     <hr />
     <div class="max-width my-3 w-100" v-for="(comment, i) in comments" :key="i">
       <div class="d-flex align-items-center gap-5">
-        <img src="/images/profile-photo.png" class="rounded-circle" alt="foto profil" width="70" />
+        <img src="/images/profile-photo.webp" class="rounded-circle" alt="foto profil" width="70" />
         <div class="comment-wrapper d-flex flex-column">
           <p id="comment-user">{{ comment }}</p>
           <div class="action-wrapper p-0">

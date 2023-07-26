@@ -3,7 +3,7 @@
     <div class="container position-sticky" style="top: 200px">
       <div class="modal-content w-50 position-relative card m-auto rounded p-5">
         <h1 class="position-absolute" style="right: 20px; top: 0; cursor: pointer" @click="$store.state.isModalActive = false">&times;</h1>
-        <img src="/images/welldone.png" alt="berhasil" class="rounded w-50 m-auto" />
+        <img src="/images/welldone.webp" alt="berhasil" class="rounded w-50 m-auto" />
         <h3 class="fs-3 m-auto">{{ modalMsg }}</h3>
       </div>
     </div>
@@ -21,9 +21,11 @@ export default {
 </script>
 <style scoped>
 .modal-wrapper {
-  position: absolute;
+  position: fixed;
   width: 100%;
   min-height: 100vh;
+  top: 0;
+  left: 0;
   background-color: rgba(128, 128, 128, 0.346);
   z-index: 900;
 }

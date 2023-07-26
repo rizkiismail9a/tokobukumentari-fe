@@ -25,10 +25,10 @@
         <h2 class="fs-5 text-light">Unduh Aplikasi Kami</h2>
         <div class="d-flex">
           <a href="#">
-            <img src="/images/googlePlay.png" alt="link ke google play" width="120" />
+            <img src="/images/googleplay.webp" alt="link ke google play" width="120" />
           </a>
           <a href="#">
-            <img src="/images/appStore.png" alt="link ke appstore" width="120" />
+            <img src="/images/appStore.webp" alt="link ke appstore" width="120" />
           </a>
         </div>
       </div>
