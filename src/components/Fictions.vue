@@ -5,7 +5,7 @@
       <a class="fs-5 font-pink" href="/koleksi">Lihat Semua</a>
     </div>
     <div class="row">
-      <div class="col-md-4 row">
+      <div class="col-md-4">
         <div class="card card-product rounded p-4 book__card h-100 col">
           <img src="/images/dream.webp" class="w-100 object-fit-contain" alt="" />
         </div>

@@ -1,5 +1,8 @@
 <template>
   <NavBar></NavBar>
+  <Transition>
+    <Modal modalMsg="Buku berhasil meluncur ke keranjang!" v-if="$store.getters.getModal" />
+  </Transition>
   <div class="container max-width">
     <div class="banner">
       <Carousel />
@@ -25,6 +28,7 @@ import NavBar from "../components/NavBar.vue";
 import Carousel from "../components/Carousel.vue";
 import Cetagories from "../components/Cetagories.vue";
 import BestSelling from "../components/BestSelling.vue";
+import Modal from "../components/Modal.vue";
 import Academics from "../components/Academics.vue";
 import Fictions from "../components/Fictions.vue";
 export default {
@@ -36,6 +40,7 @@ export default {
     BestSelling,
     Academics,
     Fictions,
+    Modal,
   },
 };
 </script>
