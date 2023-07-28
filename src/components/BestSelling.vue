@@ -5,7 +5,7 @@
       <a class="fs-5 font-pink" href="/koleksi">Lihat Semua</a>
     </div>
     <div class="row">
-      <img v-if="$store.state.isAnimationShow" src="/images/loading.gif" class="w-25 m-auto" />
+      <img v-if="isAnimationShow" src="/images/loading.gif" class="w-25 m-auto" />
       <div class="col-md-3" v-for="(book, i) in bestSellings" :key="book.title">
         <div class="card card-product rounded p-4 book__card h-100">
           <!-- <a class="position-absolute link-to-detail" href="#"></a> -->
@@ -32,6 +32,7 @@
           </router-link>
           <p class="book__card-disc font-pink fw-bold m-0">Rp{{ book.price }}</p>
           <p class="text-end m-0" id="like-button">{{ book.likes }} <i @click="addLikes(i)" class="fa-regular fa-heart fs-6 font-pink"></i></p>
+          <button class="btn btn-primary mt-3 text-white" @click="$store.commit('addToCarts', book)"><i class="fa-solid fa-cart-shopping"></i></button>
         </div>
       </div>
     </div>
@@ -44,6 +45,7 @@ export default {
   data() {
     return {
       bestSellings: [],
+      isAnimationShow: false,
     };
   },
   methods: {
@@ -52,12 +54,12 @@ export default {
     },
   },
   mounted() {
-    this.$store.state.isAnimationShow = true;
+    this.isAnimationShow = true;
     axios
       .get("https://my-json-server.typicode.com/rizkiismail9a/tokobukumentari-fakeAPI/bestSelling")
       .then(async (res) => {
         this.bestSellings = await res.data;
-        this.$store.state.isAnimationShow = false;
+        this.isAnimationShow = false;
       })
       .catch((err) => console.log(err));
   },

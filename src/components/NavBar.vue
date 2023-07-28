@@ -54,7 +54,8 @@
           </ul>
         </div>
         <a href="/keranjang" class="cart mx-2 d-flex align-items-center">
-          {{ $store.state.itemsAmount }}
+          <span v-if="itemAmount !== null">{{ getAmount }} </span>
+          <span v-else>0</span>
           <i class="fa-solid fa-cart-shopping navbar__list-link font-pink"></i>
         </a>
         <!-- <a href="/login" class="btn btn-primary mx-2">Masuk</a> -->
@@ -71,6 +72,7 @@ export default {
     return {
       active: false,
       setKeyword: "",
+      itemAmount: null,
     };
   },
   methods: {
@@ -79,6 +81,14 @@ export default {
     },
     searchBook() {
       this.$router.push({ name: "Koleksi | Toko Buku Mentari", query: { keyword: this.setKeyword } });
+    },
+  },
+  mounted() {
+    this.itemAmount = JSON.parse(localStorage.getItem("carts"));
+  },
+  computed: {
+    getAmount() {
+      return this.itemAmount.length;
     },
   },
 };

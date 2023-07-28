@@ -38,6 +38,7 @@
               </router-link>
               <p class="book__card-disc font-pink fw-bold m-0">Rp{{ book.price }}</p>
               <p class="text-end m-0" id="like-button">{{ book.likes }} <i @click="addLikes(i)" class="fa-regular fa-heart fs-6 font-pink"></i></p>
+              <button class="btn btn-primary mt-3 text-white" @click="$store.commit('addToCarts', book)"><i class="fa-solid fa-cart-shopping"></i></button>
             </div>
           </div>
         </div>

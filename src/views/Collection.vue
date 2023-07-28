@@ -1,5 +1,8 @@
 <template>
   <NavBar @cari-buku="searchBook" />
+  <Transition>
+    <Modal modalMsg="Buku berhasil meluncur ke keranjang!" v-if="$store.getters.getModal" />
+  </Transition>
   <div class="container max-width m-auto row p-4">
     <div class="container max-width m-auto noBook" v-if="noBook === true">
       <div class="container text-center d-flex flex-column justify-content-center">
@@ -7,7 +10,7 @@
         <router-link to="/">&leftarrow; Kembali ke Beranda</router-link>
       </div>
     </div>
-    <img v-if="$store.state.isAnimationShow" src="/images/loading.gif" class="w-25 m-auto" />
+    <img v-if="isAnimationShow" src="/images/loading.gif" class="w-25 m-auto" />
     <div class="col-md-3 mb-2" v-if="noBook === false" v-for="(book, i) in books" :key="book.title">
       <div class="card card-product rounded p-4 book__card h-100">
         <img class="book__card-img object-fit-contain object-fit-cover mb-3 rounded" :src="'/images/' + book.file" :alt="book.title" />
@@ -33,6 +36,7 @@
         </router-link>
         <p class="book__card-disc font-pink fw-bold m-0">Rp{{ book.price }}</p>
         <p class="text-end m-0" id="like-button">{{ book.likes }} <i @click="addLikes(i)" class="fa-regular fa-heart fs-6 font-pink"></i></p>
+        <button class="btn btn-primary mt-3 text-white" @click="$store.commit('addToCarts', book)"><i class="fa-solid fa-cart-shopping"></i></button>
       </div>
     </div>
   </div>
@@ -40,6 +44,7 @@
 
 <script>
 import NavBar from "../components/NavBar.vue";
+import Modal from "../components/Modal.vue";
 import axios from "axios";
 export default {
   name: "collection",
@@ -52,6 +57,7 @@ export default {
   },
   components: {
     NavBar,
+    Modal,
   },
   methods: {
     addLikes(index) {
@@ -62,10 +68,10 @@ export default {
         .get("https://my-json-server.typicode.com/rizkiismail9a/tokobukumentari-fakeAPI/books?q=" + setKeyword)
         .then((res) => {
           let results = res.data;
-          this.books = results;
           if (results.length === 0) {
             this.noBook = true;
           } else {
+            this.books = results;
             this.noBook = false;
           }
         })
@@ -73,13 +79,19 @@ export default {
     },
   },
   mounted() {
-    this.$store.state.isAnimationShow = true;
+    this.isAnimationShow = true;
     if (this.$route.query.keyword) {
       axios
         .get("https://my-json-server.typicode.com/rizkiismail9a/tokobukumentari-fakeAPI/books?q=" + this.$route.query.keyword)
         .then(async (res) => {
-          this.books = await res.data;
-          this.$store.state.isAnimationShow = false;
+          let results = await res.data;
+          if (results.length !== 0) {
+            this.noBook = false;
+            this.books = results;
+            this.isAnimationShow = false;
+          } else if (results.length === 0) {
+            this.noBook = true;
+          }
           // console.log(this.books);
         })
         .catch((err) => console.log(err));
@@ -88,7 +100,8 @@ export default {
         .get("https://my-json-server.typicode.com/rizkiismail9a/tokobukumentari-fakeAPI/books")
         .then(async (res) => {
           this.books = await res.data;
-          this.$store.state.isAnimationShow = false;
+          this.isAnimationShow = false;
+          // console.log(this.books);
         })
         .catch((err) => console.log(err));
     }
@@ -98,5 +111,14 @@ export default {
 <style scoped>
 .noBook {
   min-height: 90vh;
+}
+.v-enter-active,
+.v-leave-active {
+  transition: all 0.2s;
+}
+
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
 }
 </style>

@@ -1,7 +1,7 @@
 <template>
   <NavBar />
   <Transition>
-    <Modal modalMsg="Buku berhasil meluncur ke keranjang!" v-if="$store.state.isModalActive" />
+    <Modal modalMsg="Buku berhasil meluncur ke keranjang!" v-if="$store.getters.getModal" />
   </Transition>
   <main class="container my-5 m-auto p-3 card">
     <div class="row">
