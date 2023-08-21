@@ -1,8 +1,8 @@
 <template>
   <NavBar />
-  <Transition>
+  <!-- <Transition>
     <Modal modalMsg="Buku berhasil meluncur ke keranjang!" v-if="$store.getters.getModal" />
-  </Transition>
+  </Transition> -->
   <main class="container my-5 m-auto p-3 card">
     <div class="row">
       <div class="col-lg-8 book-img-wrapper">
@@ -106,7 +106,7 @@
 </template>
 <script>
 import NavBar from "../components/NavBar.vue";
-import Modal from "../components/Modal.vue";
+// import Modal from "../components/Modal.vue";
 export default {
   data() {
     return {
@@ -120,7 +120,7 @@ export default {
   },
   components: {
     NavBar,
-    Modal,
+    // Modal,
   },
   mounted() {
     this.comments = this.$route.query.comments;

@@ -1,8 +1,8 @@
 <template>
   <NavBar @cari-buku="searchBook" />
-  <Transition>
+  <!-- <Transition>
     <Modal modalMsg="Buku berhasil meluncur ke keranjang!" v-if="$store.getters.getModal" />
-  </Transition>
+  </Transition> -->
   <div class="container max-width m-auto row p-4">
     <div class="container max-width m-auto noBook" v-if="noBook === true">
       <div class="container text-center d-flex flex-column justify-content-center">
@@ -44,7 +44,8 @@
 
 <script>
 import NavBar from "../components/NavBar.vue";
-import Modal from "../components/Modal.vue";
+import { useApi } from "../composables/useApi";
+// import Modal from "../components/Modal.vue";
 import axios from "axios";
 export default {
   name: "collection",
@@ -57,7 +58,7 @@ export default {
   },
   components: {
     NavBar,
-    Modal,
+    // Modal,
   },
   methods: {
     addLikes(index) {
@@ -78,13 +79,13 @@ export default {
         .catch((err) => console.log(err));
     },
   },
-  mounted() {
+  async mounted() {
     this.isAnimationShow = true;
     if (this.$route.query.keyword) {
-      axios
+      await axios
         .get("https://my-json-server.typicode.com/rizkiismail9a/tokobukumentari-fakeAPI/books?q=" + this.$route.query.keyword)
         .then(async (res) => {
-          let results = await res.data;
+          let results = res.data;
           if (results.length !== 0) {
             this.noBook = false;
             this.books = results;
@@ -96,10 +97,10 @@ export default {
         })
         .catch((err) => console.log(err));
     } else {
-      axios
-        .get("https://my-json-server.typicode.com/rizkiismail9a/tokobukumentari-fakeAPI/books")
+      await useApi()
+        .get("/api/products/books")
         .then(async (res) => {
-          this.books = await res.data;
+          this.books = res.data;
           this.isAnimationShow = false;
           // console.log(this.books);
         })

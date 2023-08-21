@@ -9,70 +9,31 @@
           <span class="input-group-text rounded-start-pill" id="basic-addon1"> <i class="fa-solid fa-magnifying-glass" style="color: #555555"></i> </span>
           <input type="text" class="form-control rounded-end-pill" placeholder="cari judul, penulis, atau genre" aria-label="Username" aria-describedby="basic-addon1" v-model="setKeyword" />
         </form>
-        <div class="dropdown text-center mx-2 navbar__list-link">
-          <p class="dropdown-toggle mb-0" type="button" data-bs-toggle="dropdown" aria-expanded="false">Ketagori</p>
-          <ul class="dropdown-menu">
-            <li>
-              <router-link
-                @click="$emit('cariBuku', 'fiksi')"
-                class="dropdown-item"
-                :to="{
-                  name: 'Koleksi | Toko Buku Mentari',
-                  query: {
-                    keyword: 'fiksi',
-                  },
-                }"
-                >Fiksi</router-link
-              >
-            </li>
-            <li>
-              <router-link
-                @click="$emit('cariBuku', 'akademik')"
-                class="dropdown-item"
-                :to="{
-                  name: 'Koleksi | Toko Buku Mentari',
-                  query: {
-                    keyword: 'akademik',
-                  },
-                }"
-                >Akademik</router-link
-              >
-            </li>
-            <li>
-              <router-link
-                @click="$emit('cariBuku', 'sejarah')"
-                class="dropdown-item"
-                :to="{
-                  name: 'Koleksi | Toko Buku Mentari',
-                  query: {
-                    keyword: 'sejarah',
-                  },
-                }"
-                >Sejarah</router-link
-              >
-            </li>
-          </ul>
-        </div>
-        <a href="/keranjang" class="cart mx-2 d-flex align-items-center">
-          <span v-if="itemAmount !== null">{{ getAmount }} </span>
-          <span v-else>0</span>
+
+        <a href="/keranjang" v-if="isLogin" class="cart mx-2 d-flex align-items-center">
           <i class="fa-solid fa-cart-shopping navbar__list-link font-pink"></i>
         </a>
         <!-- <a href="/login" class="btn btn-primary mx-2">Masuk</a> -->
-        <a href="/profil" class="font-pink"><i class="fa-solid fa-user"></i></a>
+        <a href="/profil" v-if="isLogin" class="font-pink"><i class="fa-solid fa-user"></i></a>
+        <div v-else class="d-flex gap-1">
+          <router-link to="/login" class="btn btn-primary">Masuk</router-link>
+          <router-link to="/register" class="btn btn-outline-primary">Daftar</router-link>
+        </div>
       </div>
     </div>
   </div>
 </template>
 <script>
+import { computed } from "vue";
+import { useAuthStore } from "../store/store";
 export default {
   name: "nav-bar",
   emits: ["cariBuku"],
   data() {
     return {
-      active: false,
+      // active: false,
       setKeyword: "",
-      itemAmount: null,
+      // itemAmount: null,
     };
   },
   methods: {
@@ -83,13 +44,15 @@ export default {
       this.$router.push({ name: "Koleksi | Toko Buku Mentari", query: { keyword: this.setKeyword } });
     },
   },
-  mounted() {
-    this.itemAmount = JSON.parse(localStorage.getItem("carts"));
-  },
-  computed: {
-    getAmount() {
-      return this.itemAmount.length;
-    },
+  setup() {
+    const authStore = useAuthStore();
+    const getUser = computed(() => {
+      return authStore.userDetail;
+    });
+    const isLogin = computed(() => {
+      return authStore.getIsLogin;
+    });
+    return { isLogin, getUser };
   },
 };
 </script>

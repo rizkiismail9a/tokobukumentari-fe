@@ -12,14 +12,15 @@
         </div>
         <hr />
         <p class="text-center m-auto d-inline px-2 bg-white position-relative" style="bottom: 30px">atau</p>
-        <form>
+        <form @submit.prevent="submit">
+          <div class="alert alert-danger" role="alert" v-if="msgFail !== ''">{{ msgFail }}</div>
           <div class="mb-3">
             <label for="email" class="form-label">Email atau Username <span class="font-pink">*</span></label>
-            <input type="email" class="form-control" id="email" aria-describedby="emailHelp" name="email" placeholder="Masukkan Email" />
+            <input type="text" class="form-control" aria-describedby="emailHelp" placeholder="Masukkan Email" v-model="dataForm.identity" />
           </div>
           <div class="mb-3 position-relative">
             <label for="password" class="form-label">Password <span class="font-pink">*</span></label>
-            <input type="password" class="form-control pe-5" id="password" placeholder="Masukkan Kata Sandi" />
+            <input type="password" class="form-control pe-5" id="password" placeholder="Masukkan Kata Sandi" v-model="dataForm.password" />
             <i class="fa-solid fa-eye position-absolute" style="right: 15px; top: 42px"></i>
           </div>
           <button type="submit" class="btn btn-primary w-100 mt-4">Masuk</button>
@@ -30,10 +31,35 @@
 </template>
 <script>
 import SimpleHeader from "../components/SimpleHeader.vue";
+import { useAuthStore } from "../store/store";
+import { useRouter } from "vue-router";
+import { reactive, ref } from "vue";
 export default {
   name: "login-page",
   components: {
     SimpleHeader,
+  },
+  setup() {
+    const router = useRouter();
+    const authStore = useAuthStore();
+    const msgFail = ref("");
+    const dataForm = reactive({
+      identity: "",
+      password: "",
+    });
+    const submit = () => {
+      authStore
+        .login(dataForm)
+        .then(() => {
+          router.push("/");
+        })
+        .catch((err) => (msgFail.value = err));
+    };
+    return {
+      submit,
+      dataForm,
+      msgFail,
+    };
   },
 };
 </script>
