@@ -13,3 +13,10 @@ export const axiosPrivateInstance = axios.create({
     "Content-Type": "application/json",
   },
 });
+export const axiosPrivateImageInstance = axios.create({
+  baseURL: import.meta.env.VITE_BASE_URL,
+  withCredentials: true,
+  headers: {
+    "Content-Type": "multipart/form-data",
+  },
+});

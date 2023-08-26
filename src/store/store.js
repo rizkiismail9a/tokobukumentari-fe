@@ -1,23 +1,27 @@
 import { defineStore } from "pinia";
-import { useApi, usePrivateApi } from "../composables/useApi";
+import { useApi, usePrivateApi, usePrivateImageApi } from "../composables/useApi";
 export const useAuthStore = defineStore("auth", {
   state: () => {
     return {
       user: {},
       isLogin: false,
+      userImage: null,
       accessToken: "",
       isModalActive: false,
     };
   },
   getters: {
     userDetail: (state) => state.user,
+    getUserImage: (state) => state.userImage,
     getIsLogin: (state) => (state.user?.username ? true : false),
+    isImageAvailable: (state) => (state.userImage !== null ? true : false),
   },
   actions: {
     async attemp() {
       try {
         await this.refresh();
         await this.getUser();
+        await this.getUserImage();
         return;
       } catch (err) {
         return;
@@ -41,6 +45,7 @@ export const useAuthStore = defineStore("auth", {
         }
         return data;
       } catch (error) {
+        console.log(error);
         throw new Error(error.response.data.message);
       }
     },
@@ -69,6 +74,37 @@ export const useAuthStore = defineStore("auth", {
         this.user = data;
       } catch (error) {
         throw error.response.message;
+      }
+    },
+    async getImage() {
+      try {
+        const path = await usePrivateApi().get("/auth/getImage");
+        // console.log(path);
+        this.userImage = path.data;
+      } catch (error) {
+        console.log(error);
+        throw error.response.message;
+      }
+    },
+    async updateImage(payload) {
+      try {
+        const { data } = await usePrivateImageApi().post("/auth/uploadImage", payload);
+        await this.getUser();
+        await this.getImage();
+        return data;
+      } catch (error) {
+        console.log(error);
+        throw error.response.data.message;
+      }
+    },
+    async updateProfile(payload) {
+      try {
+        const { data } = await usePrivateApi().post("/auth/editUser", payload);
+        await this.getUser();
+        return data;
+      } catch (error) {
+        console.log(error);
+        throw error.response.data.message;
       }
     },
   },
