@@ -10,7 +10,7 @@
         <router-link to="/">&leftarrow; Kembali ke Beranda</router-link>
       </div>
     </div>
-    <img v-if="isAnimationShow" src="/images/loading.gif" class="w-25 m-auto" />
+    <!-- <img v-if="isAnimationShow" src="/images/loading.gif" class="w-25 m-auto" /> -->
     <div class="col-md-3 mb-2" v-if="noBook === false" v-for="(book, i) in books" :key="book.title">
       <div class="card card-product rounded p-4 book__card h-100">
         <img class="book__card-img object-fit-contain object-fit-cover mb-3 rounded" :src="'/images/' + book.file" :alt="book.title" />
@@ -42,72 +42,19 @@
   </div>
 </template>
 
-<script>
+<script setup>
+import { computed, onMounted, ref } from "vue";
 import NavBar from "../components/NavBar.vue";
-import { useApi } from "../composables/useApi";
-// import Modal from "../components/Modal.vue";
-import axios from "axios";
-export default {
-  name: "collection",
-  data() {
-    return {
-      books: [],
-      noBook: false,
-      isAnimationShow: false,
-    };
-  },
-  components: {
-    NavBar,
-    // Modal,
-  },
-  methods: {
-    addLikes(index) {
-      this.books[index].likes == 1 ? this.books[index].likes : this.books[index].likes++;
-    },
-    searchBook(setKeyword) {
-      axios
-        .get("https://my-json-server.typicode.com/rizkiismail9a/tokobukumentari-fakeAPI/books?q=" + setKeyword)
-        .then((res) => {
-          let results = res.data;
-          if (results.length === 0) {
-            this.noBook = true;
-          } else {
-            this.books = results;
-            this.noBook = false;
-          }
-        })
-        .catch((err) => console.log(err));
-    },
-  },
-  async mounted() {
-    this.isAnimationShow = true;
-    if (this.$route.query.keyword) {
-      await axios
-        .get("https://my-json-server.typicode.com/rizkiismail9a/tokobukumentari-fakeAPI/books?q=" + this.$route.query.keyword)
-        .then(async (res) => {
-          let results = res.data;
-          if (results.length !== 0) {
-            this.noBook = false;
-            this.books = results;
-            this.isAnimationShow = false;
-          } else if (results.length === 0) {
-            this.noBook = true;
-          }
-          // console.log(this.books);
-        })
-        .catch((err) => console.log(err));
-    } else {
-      await useApi()
-        .get("/api/products/books")
-        .then(async (res) => {
-          this.books = res.data;
-          this.isAnimationShow = false;
-          // console.log(this.books);
-        })
-        .catch((err) => console.log(err));
-    }
-  },
-};
+// import { useAuthStore } from "../store/store";
+import { useAuthStore } from "../store/store";
+const noBook = ref(false);
+const authStore = useAuthStore();
+onMounted(async () => {
+  await authStore.getBooks();
+});
+const books = computed(() => {
+  return authStore.getAllBooks;
+});
 </script>
 <style scoped>
 .noBook {

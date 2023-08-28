@@ -37,10 +37,17 @@ const router = createRouter({
     {
       path: "/profil",
       name: "Profil Akun | Toko Buku Mentari",
-      component: () => import("../views/Profile.vue"),
+      component: () => import("../views/ProfileView.vue"),
       meta: {
         requiresAuth: true,
       },
+      children: [
+        {
+          path: "/ubahsandi",
+          name: "Ubah Kata Sandi | Toko Buku Mentari",
+          component: () => import("../views/ChangePass.vue"),
+        },
+      ],
     },
     {
       path: "/keranjang",

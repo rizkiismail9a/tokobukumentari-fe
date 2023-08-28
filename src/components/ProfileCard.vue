@@ -12,6 +12,7 @@
       <button type="submit" class="btn btn-primary">Upload</button>
       <!-- <i class="fa-solid fa-trash btn btn-outline-primary d-block fs-5" style="height: 36px"></i> -->
     </form>
+    <small class="ms-3"><i>unggah foto maksimum 10 mb</i></small>
     <form v-if="formUpdate" @submit.prevent="updateData" enctype="multipart/form-data">
       <hr />
       <div class="mb-3">
@@ -74,6 +75,7 @@ const imgAvb = computed(() => {
 const updateData = async () => {
   if (newData.username === authStore.userDetail.username && newData.email === authStore.userDetail.email && newData.full_name === authStore.userDetail.full_name) {
     alert.value = "Kamu tidak mengubah data apapun";
+
     return setTimeout(() => {
       alert.value = "";
     }, 3000);
@@ -81,6 +83,7 @@ const updateData = async () => {
   try {
     await authStore.updateProfile(newData);
     succeed.value = "Data berhasil disimpan";
+    formUpdate.value = false;
     return setTimeout(() => {
       succeed.value = "";
     }, 3000);

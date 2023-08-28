@@ -14,7 +14,10 @@
           <i class="fa-solid fa-cart-shopping navbar__list-link font-pink"></i>
         </a>
         <!-- <a href="/login" class="btn btn-primary mx-2">Masuk</a> -->
-        <a href="/profil" v-if="isLogin" class="font-pink"><i class="fa-solid fa-user"></i></a>
+        <a href="/profil" v-if="isLogin" class="font-pink">
+          <i v-if="!imgAvb" class="fa-solid fa-user"></i>
+          <img :src="getImage" alt="foto profil" width="30" height="30" class="rounded-circle object-fit-cover" />
+        </a>
         <div v-else class="d-flex gap-1">
           <router-link to="/login" class="btn btn-primary">Masuk</router-link>
           <router-link to="/register" class="btn btn-outline-primary">Daftar</router-link>
@@ -46,13 +49,19 @@ export default {
   },
   setup() {
     const authStore = useAuthStore();
+    const imgAvb = computed(() => {
+      return authStore.isImageAvailable;
+    });
     const getUser = computed(() => {
       return authStore.userDetail;
+    });
+    const getImage = computed(() => {
+      return authStore.getUserImage;
     });
     const isLogin = computed(() => {
       return authStore.getIsLogin;
     });
-    return { isLogin, getUser };
+    return { isLogin, getUser, imgAvb, getImage };
   },
 };
 </script>

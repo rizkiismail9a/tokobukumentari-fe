@@ -8,6 +8,7 @@ export const useAuthStore = defineStore("auth", {
       userImage: null,
       accessToken: "",
       isModalActive: false,
+      books: null,
     };
   },
   getters: {
@@ -15,13 +16,15 @@ export const useAuthStore = defineStore("auth", {
     getUserImage: (state) => state.userImage,
     getIsLogin: (state) => (state.user?.username ? true : false),
     isImageAvailable: (state) => (state.userImage !== null ? true : false),
+    getAllBooks: (state) => state.books,
   },
   actions: {
     async attemp() {
       try {
         await this.refresh();
         await this.getUser();
-        await this.getUserImage();
+        await this.getImage();
+        await this.getBooks();
         return;
       } catch (err) {
         return;
@@ -82,7 +85,7 @@ export const useAuthStore = defineStore("auth", {
         // console.log(path);
         this.userImage = path.data;
       } catch (error) {
-        console.log(error);
+        // console.log(error);
         throw error.response.message;
       }
     },
@@ -99,12 +102,31 @@ export const useAuthStore = defineStore("auth", {
     },
     async updateProfile(payload) {
       try {
-        const { data } = await usePrivateApi().post("/auth/editUser", payload);
+        const { data } = await usePrivateApi().put("/auth/editUser", payload);
         await this.getUser();
         return data;
       } catch (error) {
         console.log(error);
         throw error.response.data.message;
+      }
+    },
+    async changePassword(payload) {
+      try {
+        const { data } = await usePrivateApi().put("/auth/changePass", payload);
+        return data;
+      } catch (error) {
+        console.log(error);
+        throw error.response.data.message;
+      }
+    },
+    async getBooks() {
+      try {
+        const { data } = await useApi().get("api/products/books");
+        console.log(data);
+        this.books = data;
+      } catch (error) {
+        console.log(error);
+        throw error.response;
       }
     },
   },
