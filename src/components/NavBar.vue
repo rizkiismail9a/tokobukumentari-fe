@@ -2,14 +2,13 @@
   <div class="bg-body-secondary">
     <div class="max-width row navbar m-auto">
       <img class="col-md-4 m-auto navbar__logo object-fit-contain" src="/images/logo.webp" style="width: 300px" />
-      <i class="fa-solid fa-bars d-block d-sm-none fs-1 text-center font-pink mb-3" @click="hamburgerBtn()" style="cursor: pointer"></i>
-      <div class="col-md-8 navbar__list d-flex align-items-center flex-column flex-md-row hamburger-menu">
+      <i class="fa-solid fa-bars d-block d-sm-none fs-1 text-center font-pink mb-3" @click="isHamburgerActive === false ? (isHamburgerActive = true) : (isHamburgerActive = false)" style="cursor: pointer"></i>
+      <div class="col-md-8 navbar__list d-flex align-items-center flex-column flex-md-row hamburger-menu" :class="{ toggle: isHamburgerActive }">
         <a href="/"><i class="fa-solid fa-house font-pink mx-2 navbar__list-link"></i></a>
-        <form @submit.prevent="searchBook()" @keyup="$emit('cariBuku', setKeyword)" action="" class="input-group navbar__list-form navbar__list-link mx-2">
+        <form @submit.prevent="goToCollection" class="input-group navbar__list-form navbar__list-link mx-2">
           <span class="input-group-text rounded-start-pill" id="basic-addon1"> <i class="fa-solid fa-magnifying-glass" style="color: #555555"></i> </span>
-          <input type="text" class="form-control rounded-end-pill" placeholder="cari judul, penulis, atau genre" aria-label="Username" aria-describedby="basic-addon1" v-model="setKeyword" />
+          <input type="text" class="form-control rounded-end-pill" placeholder="cari judul, penulis, atau genre" aria-label="Username" aria-describedby="basic-addon1" v-model="setKeyword" @keyup="sendEmit" />
         </form>
-
         <a href="/keranjang" v-if="isLogin" class="cart mx-2 d-flex align-items-center">
           <i class="fa-solid fa-cart-shopping navbar__list-link font-pink"></i>
         </a>
@@ -26,44 +25,67 @@
     </div>
   </div>
 </template>
-<script>
-import { computed } from "vue";
+<script setup>
+import { computed, ref } from "vue";
 import { useAuthStore } from "../store/store";
-export default {
-  name: "nav-bar",
-  emits: ["cariBuku"],
-  data() {
-    return {
-      // active: false,
-      setKeyword: "",
-      // itemAmount: null,
-    };
-  },
-  methods: {
-    hamburgerBtn() {
-      document.querySelector(".hamburger-menu").classList.toggle("toggle");
-    },
-    searchBook() {
-      this.$router.push({ name: "Koleksi | Toko Buku Mentari", query: { keyword: this.setKeyword } });
-    },
-  },
-  setup() {
-    const authStore = useAuthStore();
-    const imgAvb = computed(() => {
-      return authStore.isImageAvailable;
-    });
-    const getUser = computed(() => {
-      return authStore.userDetail;
-    });
-    const getImage = computed(() => {
-      return authStore.getUserImage;
-    });
-    const isLogin = computed(() => {
-      return authStore.getIsLogin;
-    });
-    return { isLogin, getUser, imgAvb, getImage };
-  },
+import { useRoute, useRouter } from "vue-router";
+// const route = useRoute();
+const router = useRouter();
+const authStore = useAuthStore();
+const setKeyword = ref("");
+const isHamburgerActive = ref(false);
+const imgAvb = computed(() => {
+  return authStore.isImageAvailable;
+});
+
+const getImage = computed(() => {
+  return authStore.getUserImage;
+});
+const isLogin = computed(() => {
+  return authStore.getIsLogin;
+});
+const goToCollection = () => {
+  router.push({ path: "/koleksi", query: { keyword: setKeyword.value } });
 };
+const emits = defineEmits(["search"]);
+function sendEmit() {
+  emits("search", setKeyword);
+}
+// export default {
+//   name: "nav-bar",
+//   emits: ["cariBuku"],
+//   data() {
+//     return {
+//       // active: false,
+//       setKeyword: "",
+//       // itemAmount: null,
+//     };
+//   },
+//   methods: {
+//     hamburgerBtn() {
+//       document.querySelector(".hamburger-menu").classList.toggle("toggle");
+//     },
+//     searchBook() {
+//       this.$router.push({ name: "Koleksi | Toko Buku Mentari", query: { keyword: this.setKeyword } });
+//     },
+//   },
+//   setup() {
+//     const authStore = useAuthStore();
+//     const imgAvb = computed(() => {
+//       return authStore.isImageAvailable;
+//     });
+//     const getUser = computed(() => {
+//       return authStore.userDetail;
+//     });
+//     const getImage = computed(() => {
+//       return authStore.getUserImage;
+//     });
+//     const isLogin = computed(() => {
+//       return authStore.getIsLogin;
+//     });
+//     return { isLogin, getUser, imgAvb, getImage };
+//   },
+// };
 </script>
 <style scoped>
 @media screen and (max-width: 480px) {

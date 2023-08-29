@@ -21,7 +21,7 @@
     <p class="text-center">Gak ada buku yang kamu cari? Yuk, lihat <a class="font-pink" href="/koleksi">koleksi kami!</a></p>
   </div>
 </template>
-<script>
+<script setup>
 import NavBar from "../components/NavBar.vue";
 import Carousel from "../components/Carousel.vue";
 import Cetagories from "../components/Cetagories.vue";
@@ -31,16 +31,4 @@ import Academics from "../components/Academics.vue";
 import Fictions from "../components/Fictions.vue";
 // import { useAuthStore } from "../store/store";
 // import { computed } from "vue";
-export default {
-  name: "home-page",
-  components: {
-    NavBar,
-    Carousel,
-    Cetagories,
-    BestSelling,
-    Academics,
-    Fictions,
-    // Modal,
-  },
-};
 </script>

@@ -45,6 +45,7 @@ export const useAuthStore = defineStore("auth", {
         if (this.accessToken) {
           this.isLogin = true;
           await this.getUser();
+          await this.getImage();
         }
         return data;
       } catch (error) {
@@ -122,7 +123,6 @@ export const useAuthStore = defineStore("auth", {
     async getBooks() {
       try {
         const { data } = await useApi().get("api/products/books");
-        console.log(data);
         this.books = data;
       } catch (error) {
         console.log(error);

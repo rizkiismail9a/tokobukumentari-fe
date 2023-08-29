@@ -1,5 +1,5 @@
 <template>
-  <NavBar @cari-buku="searchBook" />
+  <NavBar />
   <!-- <Transition>
     <Modal modalMsg="Buku berhasil meluncur ke keranjang!" v-if="$store.getters.getModal" />
   </Transition> -->
@@ -45,14 +45,13 @@
 <script setup>
 import { computed, onMounted, ref } from "vue";
 import NavBar from "../components/NavBar.vue";
-// import { useAuthStore } from "../store/store";
 import { useAuthStore } from "../store/store";
 const noBook = ref(false);
 const authStore = useAuthStore();
 onMounted(async () => {
   await authStore.getBooks();
 });
-const books = computed(() => {
+let books = computed(() => {
   return authStore.getAllBooks;
 });
 </script>
