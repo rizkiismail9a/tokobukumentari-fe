@@ -1,4 +1,7 @@
 <template>
+  <Transition>
+    <Modal :modalMsg="succeed ? succeed : fail" v-if="isModalActive" @close="isModalActive = false" />
+  </Transition>
   <div class="px-1 my-5">
     <div class="section-title-reccomended d-flex justify-content-between">
       <h2>Fiksi Pilihan</h2>
@@ -21,24 +24,14 @@
                 class="text-black"
                 :to="{
                   name: 'Detail Buku | Toko Buku Mentari',
-                  query: {
-                    title: book.title,
-                    writer: book.writer,
-                    publisher: book.publisher,
-                    year: book.year,
-                    cetagory: book.cetagory,
-                    price: book.price,
-                    about: book.about,
-                    comments: book.comments,
-                    file: book.file,
-                  },
+                  params: { id: book._id },
                 }"
               >
                 <h1 class="fs-5 my-2">{{ book.title }}</h1>
               </router-link>
               <p class="book__card-disc font-pink fw-bold m-0">Rp{{ book.price }}</p>
-              <p class="text-end m-0" id="like-button">{{ book.likes }} <i @click="addLikes(i)" class="fa-regular fa-heart fs-6 font-pink"></i></p>
-              <button class="btn btn-primary mt-3 text-white" @click="$store.commit('addToCarts', book)"><i class="fa-solid fa-cart-shopping"></i></button>
+              <p class="text-end m-0" id="like-button">{{ book.likes }} <i class="fa-regular fa-heart fs-6 font-pink"></i></p>
+              <button class="btn btn-primary mt-3 text-white" @click="addToCart(book._id)"><i class="fa-solid fa-cart-shopping"></i></button>
             </div>
           </div>
         </div>
@@ -48,26 +41,41 @@
 </template>
 
 <script>
-import axios from "axios";
+import { useApi, usePrivateApi } from "../composables/useApi";
+import Modal from "./Modal.vue";
 export default {
   data() {
     return {
       fictions: [],
+      isModalActive: false,
+      succeed: "",
+      fail: "",
     };
   },
+  components: {
+    Modal,
+  },
   methods: {
-    addLikes(index) {
-      this.fictions[index].likes == 1 ? this.fictions[index].likes : this.fictions[index].likes++;
+    addToCart(id) {
+      usePrivateApi()
+        .put(`/api/shop/addToCart/${id}`)
+        .then((res) => {
+          this.isModalActive = true;
+          this.succeed = res.data.message;
+        })
+        .catch((err) => {
+          this.isModalActive = true;
+          this.fail = err.response.data.message;
+        });
     },
   },
-  mounted() {
-    axios
-      .get("https://my-json-server.typicode.com/rizkiismail9a/tokobukumentari-fakeAPI/books?q=fiksi")
-      .then((res) => {
-        let newArr = res.data.splice(2, 3);
-        this.fictions = newArr;
-      })
-      .catch((err) => console.log(err));
+  async mounted() {
+    const { data } = await useApi().post("/api/products/search", { keyword: "fiksi" });
+    try {
+      this.fictions = data.slice(0, 3);
+    } catch (error) {
+      console.log(error);
+    }
   },
 };
 </script>

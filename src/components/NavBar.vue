@@ -7,9 +7,10 @@
         <a href="/"><i class="fa-solid fa-house font-pink mx-2 navbar__list-link"></i></a>
         <form @submit.prevent="goToCollection" class="input-group navbar__list-form navbar__list-link mx-2">
           <span class="input-group-text rounded-start-pill" id="basic-addon1"> <i class="fa-solid fa-magnifying-glass" style="color: #555555"></i> </span>
-          <input type="text" class="form-control rounded-end-pill" placeholder="cari judul, penulis, atau genre" aria-label="Username" aria-describedby="basic-addon1" v-model="setKeyword" @keyup="sendEmit" />
+          <input type="text" class="form-control rounded-end-pill" placeholder="cari judul, penulis, atau genre" aria-label="Username" aria-describedby="basic-addon1" v-model="setKeyword.keyword" @keyup="sendEmit" />
         </form>
         <a href="/keranjang" v-if="isLogin" class="cart mx-2 d-flex align-items-center">
+          <p v-if="getuser.cart.length > 0" class="rounded-pill d-inline m-0 p-1 text-white bg-pink">{{ getuser.cart.length }}</p>
           <i class="fa-solid fa-cart-shopping navbar__list-link font-pink"></i>
         </a>
         <!-- <a href="/login" class="btn btn-primary mx-2">Masuk</a> -->
@@ -26,18 +27,22 @@
   </div>
 </template>
 <script setup>
-import { computed, ref } from "vue";
+import { computed, ref, reactive } from "vue";
 import { useAuthStore } from "../store/store";
 import { useRoute, useRouter } from "vue-router";
 // const route = useRoute();
 const router = useRouter();
 const authStore = useAuthStore();
-const setKeyword = ref("");
+const setKeyword = reactive({
+  keyword: "",
+});
 const isHamburgerActive = ref(false);
 const imgAvb = computed(() => {
   return authStore.isImageAvailable;
 });
-
+const getuser = computed(() => {
+  return authStore.userDetail;
+});
 const getImage = computed(() => {
   return authStore.getUserImage;
 });
@@ -45,7 +50,7 @@ const isLogin = computed(() => {
   return authStore.getIsLogin;
 });
 const goToCollection = () => {
-  router.push({ path: "/koleksi", query: { keyword: setKeyword.value } });
+  router.push({ path: "/koleksi", query: { keyword: setKeyword.keyword } });
 };
 const emits = defineEmits(["search"]);
 function sendEmit() {

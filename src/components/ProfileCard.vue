@@ -12,7 +12,7 @@
       <button type="submit" class="btn btn-primary">Upload</button>
       <!-- <i class="fa-solid fa-trash btn btn-outline-primary d-block fs-5" style="height: 36px"></i> -->
     </form>
-    <small class="ms-3"><i>unggah foto maksimum 10 mb</i></small>
+    <small v-if="formUpdate" class="ms-3 d-block"><i>unggah foto maksimum 10 mb</i></small>
     <form v-if="formUpdate" @submit.prevent="updateData" enctype="multipart/form-data">
       <hr />
       <div class="mb-3">
@@ -100,7 +100,6 @@ const setLink = (e) => {
   imageValue = e.target.files[0];
 };
 const uploadImage = async () => {
-  console.log(imageValue);
   const payload = new FormData();
   payload.append("image", imageValue);
   try {

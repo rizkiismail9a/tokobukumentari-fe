@@ -1,14 +1,14 @@
 <template>
   <NavBar />
-  <!-- <Transition>
-    <Modal modalMsg="Buku berhasil meluncur ke keranjang!" v-if="$store.getters.getModal" />
-  </Transition> -->
+  <Transition>
+    <Modal :modalMsg="succeed ? succeed : fail" v-if="isModalActive" @close="isModalActive = false" />
+  </Transition>
   <main class="container my-5 m-auto p-3 card">
     <div class="row">
       <div class="col-lg-8 book-img-wrapper">
         <div class="row g-2 position-sticky top-0">
           <div class="col-6 h-100">
-            <img :src="'/images/' + $route.query.file" class="w-100 h-100 object-fit-cover rounded" :alt="$route.query.title" />
+            <img :src="'/images/' + book.file" class="w-100 h-100 object-fit-cover rounded" :alt="book.title" />
           </div>
           <div class="col-6 h-100">
             <div class="row g-2">
@@ -22,7 +22,7 @@
                 <img src="/images/daftarisi.webp" alt="sirkuspohon" class="w-100 object-fit-cover" />
               </div>
               <div class="col-6">
-                <img :src="'/images/' + $route.query.file" alt="sirkuspohon" class="w-100 h-100 object-fit-cover" />
+                <img :src="'/images/' + book.file" alt="sirkuspohon" class="w-100 h-100 object-fit-cover" />
               </div>
             </div>
           </div>
@@ -31,9 +31,9 @@
       <div class="col-lg-4 col p-0 book-data-wrapper">
         <div class="p-3 m-auto">
           <div class="price">
-            <h2>Rp{{ $route.query.price }}</h2>
-            <small class="text-body-secondary">{{ $route.query.writer }}</small>
-            <h1 class="fs-5">{{ $route.query.title }}</h1>
+            <h2>Rp{{ book.price }}</h2>
+            <small class="text-body-secondary">{{ book.writer }}</small>
+            <h1 class="fs-5">{{ book.title }}</h1>
             <div class="d-flex justify-content-between w-75 text-body-secondary align-items-center">
               <p class="m-0">Baru</p>
               <i class="fa-solid fa-circle text-body-secondary" style="font-size: 0.5rem"></i>
@@ -45,20 +45,20 @@
           <hr />
           <div class="item_desc h-100">
             <p>Deksripsi</p>
-            <p>{{ $route.query.about }}</p>
+            <p>{{ book.about }}</p>
             <table class="w-100">
               <tbody>
                 <tr>
                   <td class="fw-bold">Ketagori</td>
-                  <td>{{ $route.query.cetagory }}</td>
+                  <td>{{ book.cetagory }}</td>
                 </tr>
                 <tr>
                   <td class="fw-bold">Penerbit</td>
-                  <td>{{ $route.query.publisher }}</td>
+                  <td>{{ book.publisher }}</td>
                 </tr>
                 <tr>
                   <td class="fw-bold">Tahun Terbit</td>
-                  <td>{{ $route.query.year }}</td>
+                  <td>{{ book.year }}</td>
                 </tr>
                 <tr>
                   <td class="fw-bold">Jumlah Halaman</td>
@@ -70,7 +70,7 @@
           <hr />
           <div class="btn-container d-flex flex-column gap-2">
             <a class="btn btn-primary" href="#">Beli Sekarang</a>
-            <a class="btn btn-outline-primary" href="#" @click="$store.commit('addToCarts', bookOnDetail)">Masuk Keranjang</a>
+            <button class="btn btn-outline-primary" @click="addToCart(book._id)">Masuk Keranjang</button>
           </div>
         </div>
       </div>
@@ -78,76 +78,128 @@
   </main>
   <div class="container comment-wrapper w-100">
     <h1 class="fs-3">Ulasan</h1>
-    <div class="alert container max-width m-auto" v-if="alert === true">
-      <div class="alert alert-danger w-50 text-center m-auto my-0" role="alert">Komentar tidak boleh kosong</div>
+    <div class="alert container max-width m-auto" v-if="alert">
+      <div class="alert alert-danger w-50 text-center m-auto my-0" role="alert">{{ alert }}</div>
     </div>
     <div class="d-flex flex-column comment-input-wrapper">
       <label for="comment-input">Tulis komentar</label>
-      <div class="d-flex gap-1" id="comment-input-wrapper">
-        <textarea name="comment" id="comment-input" class="w-75" style="resize: none" v-model="commentValue"></textarea>
-        <button v-if="isBtnCommentActive" type="submit" class="btn btn-primary w-25" id="btnSubmit" @click="updateComment">Edit Komentar</button>
-        <button v-else type="submit" class="btn btn-primary w-25" id="btnSubmit" @click="addComment">Kirim Komentar</button>
+      <div id="comment-input-wrapper">
+        <form @submit.prevent="createComment" class="d-flex gap-1">
+          <textarea name="comment" id="comment-input" class="w-75" style="resize: none" v-model="newComment.userComment"></textarea>
+          <button v-if="isBtnCommentActive" type="submit" class="btn btn-primary w-25" id="btnSubmit" @click="updateComment">Edit Komentar</button>
+          <button v-else type="submit" class="btn btn-primary w-25" id="btnSubmit">Kirim Komentar</button>
+        </form>
       </div>
     </div>
     <hr />
-    <div class="max-width my-3 w-100" v-for="(comment, i) in comments" :key="i">
+    <div class="max-width my-3 w-100" v-for="(comment, i) in comments" :key="comment._id">
       <div class="d-flex align-items-center gap-5">
-        <img src="/images/profile-photo.webp" class="rounded-circle" alt="foto profil" width="70" />
+        <img :src="url + comment.content.user.image" class="rounded-circle object-fit-cover" alt="foto profil" width="70" height="70" />
         <div class="comment-wrapper d-flex flex-column">
-          <p id="comment-user">{{ comment }}</p>
-          <div class="action-wrapper p-0">
+          <h5>{{ comment.content.user.full_name }}</h5>
+          <p id="comment-user">{{ comment.content.userComment }}</p>
+          <small class="text-secondary">{{ createdTime }}</small>
+          <!-- <div class="action-wrapper p-0">
             <small class="me-2 text-body-secondary" style="cursor: pointer" @click="editComment(i)">Edit</small>
             <small class="me-2 text-body-secondary" style="cursor: pointer" @click="deleteComment(i)">Hapus</small>
-          </div>
+          </div> -->
         </div>
       </div>
     </div>
   </div>
 </template>
 <script>
+import { useRoute, useRouter } from "vue-router";
 import NavBar from "../components/NavBar.vue";
-// import Modal from "../components/Modal.vue";
+import { useApi, usePrivateApi } from "../composables/useApi";
+import { useAuthStore } from "../store/store";
+import { reactive, ref } from "vue";
+import Modal from "../components/Modal.vue";
 export default {
   data() {
     return {
-      comments: [],
-      commentValue: "",
-      bookOnDetail: this.$route.query,
-      alert: false,
+      comments: "",
+      book: "",
+      url: import.meta.env.VITE_BASE_URL + "/",
       isBtnCommentActive: false,
       activeCommentIndex: null,
+      isModalActive: false,
+      succeed: "",
+      fail: "",
     };
   },
   components: {
     NavBar,
-    // Modal,
+    Modal,
   },
   mounted() {
-    this.comments = this.$route.query.comments;
+    useApi()
+      .get(`/api/products/bookDetail/${this.$route.params.id}`)
+      .then((res) => {
+        this.book = res.data;
+        this.comments = res.data.comments;
+        this.comments.forEach((item) => {
+          const tanggal = new Date(item.createdAt.replace("T", " ")).getTime();
+          item.createdAt = tanggal;
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    // this.comments = this.$route.query.comments;
   },
   methods: {
-    addComment() {
-      if (this.commentValue) {
-        this.alert = false;
-        this.comments.push(this.commentValue);
-        this.commentValue = "";
+    addToCart(id) {
+      usePrivateApi()
+        .put(`/api/shop/addToCart/${id}`)
+        .then((res) => {
+          this.isModalActive = true;
+          this.succeed = res.data.message;
+        })
+        .catch((err) => {
+          this.isModalActive = true;
+          this.fail = "Login dulu, yuk";
+        });
+    },
+  },
+  computed: {
+    createdTime() {
+      const day = this.comments.createdAt / (24 * 60 * 60 * 1000);
+      if (day > 30) {
+        return `${day} bulan yang lalu`;
+      } else if (day > 7 && day <= 30) {
+        return `${day} hari yang lalu`;
+      } else if (day > 1 && day <= 7) {
+        return `${day} hari yang lalu`;
       } else {
-        this.alert = true;
+        return `kurang dari sehari yang lalu`;
       }
     },
-    deleteComment(index) {
-      this.comments.splice(index, 1);
-    },
-    editComment(index) {
-      this.activeCommentIndex = index;
-      this.isBtnCommentActive = true;
-      this.commentValue = this.comments[index];
-    },
-    updateComment() {
-      this.isBtnCommentActive = false;
-      this.comments.splice(this.activeCommentIndex, 1, this.commentValue);
-      this.commentValue = "";
-    },
+  },
+  setup() {
+    const authStore = useAuthStore();
+    const route = useRoute();
+    const alert = ref("");
+    const newComment = reactive({
+      userComment: "",
+    });
+    const createComment = async () => {
+      if (authStore.userDetail.username) {
+        usePrivateApi()
+          .post(`/api/products/createComment/${route.params.id}`, newComment)
+          .then((res) => {
+            location.reload();
+          })
+          .catch((err) => {
+            alert.value = err.response.data.message;
+          });
+      }
+    };
+    return {
+      newComment,
+      createComment,
+      alert,
+    };
   },
 };
 </script>

@@ -30,7 +30,7 @@ const router = createRouter({
       },
     },
     {
-      path: "/detailBuku",
+      path: "/detailBuku/:id",
       name: "Detail Buku | Toko Buku Mentari",
       component: () => import("../views/BookDetail.vue"),
     },

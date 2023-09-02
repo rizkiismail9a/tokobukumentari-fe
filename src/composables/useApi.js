@@ -3,6 +3,20 @@ import { axiosInstace, axiosPrivateInstance, axiosPrivateImageInstance } from ".
 import { useAuthStore } from "../store/store";
 
 export const useApi = () => {
+  watchEffect(() => {
+    axiosInstace.interceptors.request.use(
+      (config) => config,
+      (err) => {
+        throw err;
+      }
+    );
+    axiosInstace.interceptors.response.use(
+      (response) => response,
+      (err) => {
+        throw err;
+      }
+    );
+  });
   return axiosInstace;
 };
 export const usePrivateApi = () => {
