@@ -31,7 +31,7 @@
               </router-link>
               <p class="book__card-disc font-pink fw-bold m-0">Rp{{ book.price }}</p>
               <p class="text-end m-0" id="like-button">{{ book.likes }} <i class="fa-regular fa-heart fs-6 font-pink"></i></p>
-              <button class="btn btn-primary mt-3 text-white" @click="addToCart(book._id)"><i class="fa-solid fa-cart-shopping"></i></button>
+              <button class="btn btn-primary mt-3 text-white" @click="addToCarts(book._id)"><i class="fa-solid fa-cart-shopping"></i></button>
             </div>
           </div>
         </div>
@@ -42,33 +42,22 @@
 
 <script>
 import { useApi, usePrivateApi } from "../composables/useApi";
+import { ref } from "vue";
 import Modal from "./Modal.vue";
+import { useAuthStore } from "../store/store";
 export default {
   data() {
     return {
       academics: [],
-      isModalActive: false,
-      succeed: "",
-      fail: "",
+      // isModalActive: false,
+      // succeed: "",
+      // fail: "",
     };
   },
   components: {
     Modal,
   },
-  methods: {
-    addToCart(id) {
-      usePrivateApi()
-        .put(`/api/shop/addToCart/${id}`)
-        .then((res) => {
-          this.isModalActive = true;
-          this.succeed = res.data.message;
-        })
-        .catch((err) => {
-          this.isModalActive = true;
-          this.fail = err.response.data.message;
-        });
-    },
-  },
+  methods: {},
   async mounted() {
     const { data } = await useApi().post("/api/products/search", { keyword: "akademik" });
     try {
@@ -76,6 +65,32 @@ export default {
     } catch (error) {
       console.log(error);
     }
+  },
+  setup() {
+    const fail = ref("");
+    const succeed = ref("");
+    const isModalActive = ref(false);
+    const authStore = useAuthStore();
+    async function addToCarts(id) {
+      if (!authStore.getIsLogin) {
+        isModalActive.value = true;
+        return (fail.value = "Login dulu, yuk 🐱");
+      }
+      try {
+        const { data } = await usePrivateApi().put(`/api/shop/addToCart/${id}`);
+        isModalActive.value = true;
+        succeed.value = data.message;
+      } catch (error) {
+        isModalActive.value = true;
+        return (fail.value = error.response.data.message);
+      }
+    }
+    return {
+      addToCarts,
+      fail,
+      isModalActive,
+      succeed,
+    };
   },
 };
 </script>

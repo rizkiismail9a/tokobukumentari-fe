@@ -5,17 +5,18 @@
     <div class="col-sm-6">
       <div class="list-group position-sticky rounded" style="top: 100px">
         <h3>Setting</h3>
-        <router-link to="/profil" class="list-group-item list-group-item-action" :class="{ active: isProfileCardActive }" aria-current="true" @click="isProfileCardActive = true"> Detail Profil </router-link>
+        <router-link to="/profil" class="list-group-item list-group-item-action" :class="{ active: isProfile }" aria-current="true" @click="activeSection('profil')"> Detail Profil </router-link>
         <!-- <a href="#" class="list-group-item list-group-item-action">Ubah kata sandi</a> -->
-        <router-link :to="{ name: 'Ubah Kata Sandi | Toko Buku Mentari' }" class="list-group-item list-group-item-action" :class="{ active: !isProfileCardActive }" @click="isProfileCardActive = false">Ubah Kata Sandi</router-link>
+        <router-link :to="{ name: 'Ubah Kata Sandi | Toko Buku Mentari' }" class="list-group-item list-group-item-action" :class="{ active: isFavorite }" @click="activeSection('favorite')">Favorit</router-link>
+        <router-link :to="{ name: 'Ubah Kata Sandi | Toko Buku Mentari' }" class="list-group-item list-group-item-action" :class="{ active: isPass }" @click="activeSection('pass')">Ubah Kata Sandi</router-link>
         <button class="btn btn-danger mt-5" @click="logout">Logout</button>
       </div>
     </div>
-    <div class="col-sm-6" v-show="isProfileCardActive">
+    <div class="col-sm-6" v-show="isProfile">
       <ProfileCard />
     </div>
     <div class="col-sm-6">
-      <router-view v-if="isProfileCardActive === false" v-slot="{ Component }" @close="isProfileCardActive = true">
+      <router-view v-if="isProfile === false" v-slot="{ Component }" @close="isProfile = true">
         <transition name="route" mode="out-in" appear>
           <component :is="Component" />
         </transition>
@@ -32,13 +33,30 @@ import ProfileCard from "../components/ProfileCard.vue";
 import { useAuthStore } from "../store/store";
 import { useRouter } from "vue-router";
 import { ref } from "vue";
-const isProfileCardActive = ref(true);
+const isProfile = ref(true);
+const isFavorite = ref(false);
+const isPass = ref(false);
 const router = useRouter();
 const authStore = useAuthStore();
 const logout = async () => {
   authStore.logout().then(() => {
     router.push("/");
   });
+};
+const activeSection = (sectionClicked) => {
+  if (sectionClicked === "favorite") {
+    isFavorite.value = true;
+    isProfile.value = false;
+    isPass.value = false;
+  } else if (sectionClicked === "pass") {
+    isFavorite.value = false;
+    isProfile.value = false;
+    isPass.value = true;
+  } else {
+    isFavorite.value = false;
+    isProfile.value = true;
+    isPass.value = false;
+  }
 };
 </script>
 <style scoped>

@@ -38,7 +38,9 @@ import { onMounted, ref, reactive } from "vue";
 import NavBar from "../components/NavBar.vue";
 import { useApi, usePrivateApi } from "../composables/useApi";
 import { useRoute } from "vue-router";
+import { useAuthStore } from "../store/store";
 const route = useRoute();
+const authStore = useAuthStore();
 const isModalActive = ref(false);
 const succeed = ref("");
 const fail = ref("");
@@ -79,17 +81,18 @@ function findBook(payload) {
     });
 }
 
-function addToCarts(id) {
-  usePrivateApi()
-    .put(`/api/shop/addToCart/${id}`)
-    .then((res) => {
-      isModalActive.value = true;
-      succeed.value = res.data.message;
-    })
-    .catch((err) => {
-      isModalActive.value = true;
-      fail.value = err.response.data.message;
-    });
+async function addToCarts(id) {
+  if (!authStore.getIsLogin) {
+    isModalActive.value = true;
+    return (fail.value = "Login dulu, yuk 🐱");
+  }
+  const { data } = await usePrivateApi().put(`/api/shop/addToCart/${id}`);
+  try {
+    isModalActive.value = true;
+    succeed.value = data.response.message;
+  } catch (error) {
+    console.log(error);
+  }
 }
 </script>
 <style scoped>

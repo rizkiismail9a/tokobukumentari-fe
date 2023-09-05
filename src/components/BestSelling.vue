@@ -34,33 +34,19 @@
 
 <script>
 import { useApi, usePrivateApi } from "../composables/useApi";
+import { ref } from "vue";
 import Modal from "./Modal.vue";
+import { useAuthStore } from "../store/store";
 export default {
   data() {
     return {
       bestSellings: [],
-      isModalActive: false,
-      succeed: "",
-      fail: "",
     };
   },
   components: {
     Modal,
   },
-  methods: {
-    addToCart(id) {
-      usePrivateApi()
-        .put(`/api/shop/addToCart/${id}`)
-        .then((res) => {
-          this.isModalActive = true;
-          this.succeed = res.data.message;
-        })
-        .catch((err) => {
-          this.isModalActive = true;
-          this.fail = err.response.data.message;
-        });
-    },
-  },
+
   async mounted() {
     const { data } = await useApi().get("/api/products/bestSelling");
     try {
@@ -68,6 +54,32 @@ export default {
     } catch (error) {
       console.log(error);
     }
+  },
+  setup() {
+    const fail = ref("");
+    const succeed = ref("");
+    const isModalActive = ref(false);
+    const authStore = useAuthStore();
+    async function addToCart(id) {
+      if (!authStore.getIsLogin) {
+        isModalActive.value = true;
+        return (fail.value = "Login dulu, yuk 🐱");
+      }
+      try {
+        const { data } = await usePrivateApi().put(`/api/shop/addToCart/${id}`);
+        isModalActive.value = true;
+        succeed.value = data.message;
+      } catch (error) {
+        isModalActive.value = true;
+        return (fail.value = error.response.data.message);
+      }
+    }
+    return {
+      addToCart,
+      fail,
+      isModalActive,
+      succeed,
+    };
   },
 };
 </script>

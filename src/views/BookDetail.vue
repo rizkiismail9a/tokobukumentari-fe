@@ -98,7 +98,7 @@
         <div class="comment-wrapper d-flex flex-column">
           <h5>{{ comment.content.user.full_name }}</h5>
           <p id="comment-user">{{ comment.content.userComment }}</p>
-          <small class="text-secondary">{{ createdTime }}</small>
+          <small class="text-secondary">{{ comment.createdAt }}</small>
           <!-- <div class="action-wrapper p-0">
             <small class="me-2 text-body-secondary" style="cursor: pointer" @click="editComment(i)">Edit</small>
             <small class="me-2 text-body-secondary" style="cursor: pointer" @click="deleteComment(i)">Hapus</small>
@@ -123,9 +123,6 @@ export default {
       url: import.meta.env.VITE_BASE_URL + "/",
       isBtnCommentActive: false,
       activeCommentIndex: null,
-      isModalActive: false,
-      succeed: "",
-      fail: "",
     };
   },
   components: {
@@ -140,7 +137,18 @@ export default {
         this.comments = res.data.comments;
         this.comments.forEach((item) => {
           const tanggal = new Date(item.createdAt.replace("T", " ")).getTime();
-          item.createdAt = tanggal;
+          const today = new Date().getTime();
+          const timeDifferent = today - tanggal;
+          const day = Math.ceil(timeDifferent / (24 * 60 * 60 * 1000));
+          if (day <= 7) {
+            item.createdAt = `${day} hari yang lalu`;
+          } else if (day > 7 && day <= 30) {
+            item.createdAt = `${Math.ceil(day / 7)} minggu yang lalu`;
+          } else if (day > 30 && day <= 365) {
+            item.createdAt = `${Math.ceil(day / 30)} bulan yang lalu`;
+          } else {
+            item.createdAt = `${Math.ceil(day / 365)} tahun yang lalu`;
+          }
         });
       })
       .catch((err) => {
@@ -148,42 +156,21 @@ export default {
       });
     // this.comments = this.$route.query.comments;
   },
-  methods: {
-    addToCart(id) {
-      usePrivateApi()
-        .put(`/api/shop/addToCart/${id}`)
-        .then((res) => {
-          this.isModalActive = true;
-          this.succeed = res.data.message;
-        })
-        .catch((err) => {
-          this.isModalActive = true;
-          this.fail = "Login dulu, yuk";
-        });
-    },
-  },
-  computed: {
-    createdTime() {
-      const day = this.comments.createdAt / (24 * 60 * 60 * 1000);
-      if (day > 30) {
-        return `${day} bulan yang lalu`;
-      } else if (day > 7 && day <= 30) {
-        return `${day} hari yang lalu`;
-      } else if (day > 1 && day <= 7) {
-        return `${day} hari yang lalu`;
-      } else {
-        return `kurang dari sehari yang lalu`;
-      }
-    },
-  },
+
   setup() {
     const authStore = useAuthStore();
     const route = useRoute();
     const alert = ref("");
+    const fail = ref("");
+    const succeed = ref("");
+    const isModalActive = ref(false);
     const newComment = reactive({
       userComment: "",
     });
     const createComment = async () => {
+      if (!authStore.getIsLogin) {
+        return (alert.value = "Login dulu, yuk 🐱");
+      }
       if (authStore.userDetail.username) {
         usePrivateApi()
           .post(`/api/products/createComment/${route.params.id}`, newComment)
@@ -195,10 +182,30 @@ export default {
           });
       }
     };
+    function addToCart(id) {
+      if (!authStore.getIsLogin) {
+        isModalActive.value = true;
+        return (fail.value = "Login dulu, yuk 🐱");
+      }
+      usePrivateApi()
+        .put(`/api/shop/addToCart/${id}`)
+        .then((res) => {
+          isModalActive.value = true;
+          succeed.value = res.data.message;
+        })
+        .catch((err) => {
+          isModalActive.value = true;
+          fail.value = err.response.data.message;
+        });
+    }
     return {
       newComment,
       createComment,
       alert,
+      addToCart,
+      fail,
+      succeed,
+      isModalActive,
     };
   },
 };
