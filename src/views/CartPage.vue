@@ -54,13 +54,15 @@
           <hr />
           <h5>Total harga:</h5>
           <h2 class="fs-3">Rp{{ price0 }}</h2>
-          <button @click="clearStorage" href="#" class="btn btn-primary rounded-pill w-100">Checkout</button>
+          <a class="btn btn-primary w-100" @click="checkout" target="_blank">Checkout</a>
         </div>
       </div>
     </div>
   </div>
+  <Footer></Footer>
 </template>
 <script setup>
+import Footer from "../components/Footer.vue";
 import SimpleHeader from "../components/SimpleHeader.vue";
 import { usePrivateApi } from "../composables/useApi";
 import { reactive, onMounted, ref } from "vue";
@@ -80,10 +82,15 @@ onMounted(() => {
       console.log(err);
     });
 });
-// const totalPrice = computed(() => {
-//   data.items.forEach((item) => (price0.value += item.book.price));
-//   return price0.value;
-// });
+function checkout() {
+  let orders = "";
+  let waLink = `https://wa.me/6282317421414?text=Saya%20ingin%20pesan%20buku%20ini%20dong,%20Min!`;
+  data.items.forEach((item) => {
+    orders += `%0aJudul:%20${item.book.title}%0aPenulis:%20${item.book.writer}%0aJumlah:%20${item.amount}%0a`;
+  });
+  waLink += orders;
+  window.location.href = waLink;
+}
 function removeBook(index) {
   usePrivateApi()
     .delete(`/api/shop/removeItem/${index}`)

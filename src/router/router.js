@@ -47,6 +47,11 @@ const router = createRouter({
           name: "Ubah Kata Sandi | Toko Buku Mentari",
           component: () => import("../views/ChangePass.vue"),
         },
+        {
+          path: "/detailakun",
+          name: "Detail Akun | Toko Buku Mentari",
+          component: () => import("../views/ProfileCard.vue"),
+        },
       ],
     },
     {

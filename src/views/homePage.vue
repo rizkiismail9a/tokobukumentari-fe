@@ -20,6 +20,7 @@
     </div>
     <p class="text-center">Gak ada buku yang kamu cari? Yuk, lihat <a class="font-pink" href="/koleksi">koleksi kami!</a></p>
   </div>
+  <Footer></Footer>
 </template>
 <script setup>
 import NavBar from "../components/NavBar.vue";
@@ -29,6 +30,7 @@ import BestSelling from "../components/BestSelling.vue";
 // import Modal from "../components/Modal.vue";
 import Academics from "../components/Academics.vue";
 import Fictions from "../components/Fictions.vue";
+import Footer from "../components/Footer.vue";
 // import { useAuthStore } from "../store/store";
 // import { computed } from "vue";
 </script>

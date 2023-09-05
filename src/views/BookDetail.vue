@@ -69,7 +69,7 @@
           </div>
           <hr />
           <div class="btn-container d-flex flex-column gap-2">
-            <a class="btn btn-primary" href="#">Beli Sekarang</a>
+            <a class="btn btn-primary" :href="`https://wa.me/6282317421414?text=Saya%20ingin%20pesan%20buku%20ini%20dong,%20Min!%0aJudul:%20${book.title}%0aPenulis:%20${book.writer}`" target="_blank">Beli Sekarang</a>
             <button class="btn btn-outline-primary" @click="addToCart(book._id)">Masuk Keranjang</button>
           </div>
         </div>
@@ -99,17 +99,15 @@
           <h5>{{ comment.content.user.full_name }}</h5>
           <p id="comment-user">{{ comment.content.userComment }}</p>
           <small class="text-secondary">{{ comment.createdAt }}</small>
-          <!-- <div class="action-wrapper p-0">
-            <small class="me-2 text-body-secondary" style="cursor: pointer" @click="editComment(i)">Edit</small>
-            <small class="me-2 text-body-secondary" style="cursor: pointer" @click="deleteComment(i)">Hapus</small>
-          </div> -->
         </div>
       </div>
     </div>
   </div>
+  <Footer></Footer>
 </template>
 <script>
-import { useRoute, useRouter } from "vue-router";
+import Footer from "../components/Footer.vue";
+import { useRoute } from "vue-router";
 import NavBar from "../components/NavBar.vue";
 import { useApi, usePrivateApi } from "../composables/useApi";
 import { useAuthStore } from "../store/store";
@@ -128,6 +126,7 @@ export default {
   components: {
     NavBar,
     Modal,
+    Footer,
   },
   mounted() {
     useApi()
@@ -156,7 +155,6 @@ export default {
       });
     // this.comments = this.$route.query.comments;
   },
-
   setup() {
     const authStore = useAuthStore();
     const route = useRoute();
@@ -198,6 +196,7 @@ export default {
           fail.value = err.response.data.message;
         });
     }
+
     return {
       newComment,
       createComment,

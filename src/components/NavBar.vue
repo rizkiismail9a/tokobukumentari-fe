@@ -14,7 +14,7 @@
           <i class="fa-solid fa-cart-shopping navbar__list-link font-pink"></i>
         </a>
         <!-- <a href="/login" class="btn btn-primary mx-2">Masuk</a> -->
-        <a href="/profil" v-if="isLogin" class="font-pink">
+        <a href="/detailakun" v-if="isLogin" class="font-pink">
           <i v-if="!imgAvb" class="fa-solid fa-user"></i>
           <img :src="getImage" alt="foto profil" width="30" height="30" class="rounded-circle object-fit-cover" />
         </a>

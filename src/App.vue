@@ -1,16 +1,6 @@
 <template>
   <router-view v-slot="{ Component }">
-    <keep-alive>
-      <component :is="Component" />
-    </keep-alive>
+    <component :is="Component" />
   </router-view>
-  <Footer></Footer>
+  <!-- <Footer></Footer> -->
 </template>
-<script>
-import Footer from "./components/Footer.vue";
-export default {
-  components: {
-    Footer,
-  },
-};
-</script>

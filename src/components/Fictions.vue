@@ -10,7 +10,7 @@
     <div class="row">
       <div class="col-md-4">
         <div class="card card-product rounded p-4 book__card h-100 col">
-          <img src="/images/dream.webp" class="w-100 object-fit-contain" alt="" />
+          <img src="/images/dream.webp" class="w-100 object-fit-contain my-auto" alt="" />
         </div>
       </div>
       <div class="col-md-8">
@@ -19,7 +19,7 @@
             <div class="card card-product rounded p-4 book__card h-100">
               <!-- <a class="position-absolute link-to-detail" href="#"></a> -->
               <img class="book__card-img object-fit-contain object-fit-cover mb-3 rounded" :src="'/images/' + book.file" :alt="book.title" />
-              <small class="book__card-p text-secondary">{{ book.writer }}</small>
+              <small class="book__card-small text-secondary">{{ book.writer }}</small>
               <router-link
                 class="text-black"
                 :to="{
@@ -27,11 +27,12 @@
                   params: { id: book._id },
                 }"
               >
-                <h1 class="fs-5 my-2">{{ book.title }}</h1>
+                <h1 class="fs-5 my-2 book__card-title">{{ book.title }}</h1>
               </router-link>
-              <p class="book__card-disc font-pink fw-bold m-0">Rp{{ book.price }}</p>
-              <p class="text-end m-0" id="like-button">{{ book.likes }} <i class="fa-regular fa-heart fs-6 font-pink"></i></p>
-              <button class="btn btn-primary mt-3 text-white" @click="addToCart(book._id)"><i class="fa-solid fa-cart-shopping"></i></button>
+              <div style="height: 100px" class="d-flex flex-column justify-content-end">
+                <p class="book__card-disc font-pink fw-bold m-0">Rp{{ book.price }}</p>
+                <button class="btn btn-primary mt-3 text-white book__card-btn w-100" @click="addToCart(book._id)"><i class="fa-solid fa-cart-shopping"></i></button>
+              </div>
             </div>
           </div>
         </div>
@@ -93,3 +94,25 @@ export default {
   },
 };
 </script>
+<style scoped>
+.book__card-img {
+  height: 250px;
+}
+.book__card-small {
+  height: fit-content;
+  margin: 0;
+  padding: 0;
+}
+.book__card-title {
+  height: 100px;
+}
+.v-enter-active,
+.v-leave-active {
+  transition: all 0.2s;
+}
+
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
+}
+</style>
