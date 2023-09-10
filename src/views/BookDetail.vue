@@ -94,7 +94,7 @@
     <hr />
     <div class="max-width my-3 w-100" v-for="(comment, i) in comments" :key="comment._id">
       <div class="d-flex align-items-center gap-5">
-        <img :src="url + comment.content.user.image" class="rounded-circle object-fit-cover" alt="foto profil" width="70" height="70" />
+        <img :src="comment.image" class="rounded-circle object-fit-cover" alt="foto profil" width="70" height="70" />
         <div class="comment-wrapper d-flex flex-column">
           <h5>{{ comment.content.user.full_name }}</h5>
           <p id="comment-user">{{ comment.content.userComment }}</p>
@@ -118,7 +118,7 @@ export default {
     return {
       comments: "",
       book: "",
-      url: import.meta.env.VITE_BASE_URL + "/",
+      url: import.meta.env.VITE_BASE_URL,
       isBtnCommentActive: false,
       activeCommentIndex: null,
     };
@@ -138,6 +138,13 @@ export default {
           const tanggal = new Date(item.createdAt.replace("T", " ")).getTime();
           const today = new Date().getTime();
           const timeDifferent = today - tanggal;
+          useApi()
+            .get(`/auth/getImage/${item.content.user}`)
+            .then((res) => {
+              // console.log(res);
+              item.image = res.data;
+            })
+            .catch((err) => console.log(err));
           const day = Math.ceil(timeDifferent / (24 * 60 * 60 * 1000));
           if (day <= 7) {
             item.createdAt = `${day} hari yang lalu`;
@@ -153,7 +160,6 @@ export default {
       .catch((err) => {
         console.log(err);
       });
-    // this.comments = this.$route.query.comments;
   },
   setup() {
     const authStore = useAuthStore();

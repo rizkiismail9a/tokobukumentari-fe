@@ -82,7 +82,7 @@ export const useAuthStore = defineStore("auth", {
     },
     async getImage() {
       try {
-        const path = await usePrivateApi().get("/auth/getImage");
+        const path = await usePrivateApi().get(`/auth/getImage/${this.user._id}`);
         // console.log(path);
         this.userImage = path.data;
       } catch (error) {

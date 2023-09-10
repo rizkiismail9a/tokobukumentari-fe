@@ -9,11 +9,21 @@
       <Cetagories />
     </div>
     <div class="best-selling">
-      <BestSelling />
+      <Suspense>
+        <BestSelling />
+        <template #fallback>
+          <p>Loading...</p>
+        </template>
+      </Suspense>
     </div>
     <!-- <div class="pop-writer"></div> -->
     <div class="academic">
-      <Academics />
+      <Suspense>
+        <Academics />
+        <template #fallback>
+          <p>Loading...</p>
+        </template>
+      </Suspense>
     </div>
     <div class="fiction">
       <Fictions />
