@@ -28,7 +28,7 @@
     <div class="fiction">
       <Fictions />
     </div>
-    <p class="text-center">Gak ada buku yang kamu cari? Yuk, lihat <a class="font-pink" href="/koleksi">koleksi kami!</a></p>
+    <p class="text-center">Gak ada buku yang kamu cari? Yuk, lihat <router-link class="font-pink" to="/koleksi">koleksi kami!</router-link></p>
   </div>
   <Footer></Footer>
 </template>

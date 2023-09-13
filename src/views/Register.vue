@@ -12,7 +12,7 @@
       </div>
       <div class="col-md-6 card p-3 m-auto my-3" style="width: 24rem">
         <h1 class="fs-3">Daftar</h1>
-        <p class="m-0">Udah punya akun? <a href="/login">Masuk aja</a></p>
+        <p class="m-0">Udah punya akun? <router-link to="/login">Masuk aja</router-link></p>
         <hr />
         <div class="google text-center font-pink border rounded p-2">
           <i class="fa-brands fa-google fs-3"></i>

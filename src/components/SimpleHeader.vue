@@ -1,8 +1,8 @@
 <template>
   <div class="bg-body-secondary">
-    <a href="/" class="m-auto d-block text-center">
+    <router-link to="/" class="m-auto d-block text-center">
       <img src="/images/logo.webp" class="object-fit-contain w-25 header__img" alt="logo tokobukumentari" />
-    </a>
+    </router-link>
   </div>
 </template>
 <style scoped>

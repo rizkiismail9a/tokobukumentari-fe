@@ -5,7 +5,7 @@
       <img class="col-md-6 object-fit-contain" src="/images/login.webp" alt="orang masuk ke pintu" />
       <div class="col-md-6 card p-3 m-auto my-3" style="width: 24rem">
         <h1 class="fs-3">Masuk</h1>
-        <p class="m-0">Belum punya akun? Yuk, <a href="/register">daftar</a></p>
+        <p class="m-0">Belum punya akun? Yuk, <router-link to="/register">daftar</router-link></p>
         <hr />
         <div class="google text-center font-pink border rounded p-2">
           <i class="fa-brands fa-google fs-3"></i>

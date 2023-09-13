@@ -3,8 +3,8 @@
   <div class="container my-5">
     <nav aria-label="breadcrumb">
       <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a class="font-pink" href="/">Beranda</a></li>
-        <li class="breadcrumb-item"><a class="font-pink" href="/koleksi">Koleksi</a></li>
+        <li class="breadcrumb-item"><router-link class="font-pink" to="/">Beranda</router-link></li>
+        <li class="breadcrumb-item"><router-link class="font-pink" to="/koleksi">Koleksi</router-link></li>
         <li class="breadcrumb-item active" aria-current="page">Keranjang</li>
       </ol>
     </nav>

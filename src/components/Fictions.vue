@@ -5,7 +5,7 @@
   <div class="px-1 my-5">
     <div class="section-title-reccomended d-flex justify-content-between">
       <h2>Fiksi Pilihan</h2>
-      <a class="fs-5 font-pink" href="/koleksi">Lihat Semua</a>
+      <router-link class="fs-5 font-pink" to="/koleksi">Lihat Semua</router-link>
     </div>
     <div class="row">
       <div class="col-md-4">
@@ -17,7 +17,6 @@
         <div class="row">
           <div class="col-md-4" v-for="(book, i) in fictions" :key="book.title">
             <div class="card card-product rounded p-4 book__card h-100">
-              <!-- <a class="position-absolute link-to-detail" href="#"></a> -->
               <img class="book__card-img object-fit-contain object-fit-cover mb-3 rounded" :src="'/images/' + book.file" :alt="book.title" />
               <small class="book__card-small text-secondary">{{ book.writer }}</small>
               <router-link

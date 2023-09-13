@@ -4,15 +4,14 @@
   <div class="row container g-3 justify-content-around my-3 mx-auto max-width">
     <nav aria-label="breadcrumb">
       <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a class="font-pink" href="/">Beranda</a></li>
-        <li class="breadcrumb-item"><a class="font-pink" href="/koleksi">Koleksi</a></li>
+        <li class="breadcrumb-item"><router-link class="font-pink" to="/">Beranda</router-link></li>
+        <li class="breadcrumb-item"><router-link class="font-pink" to="/koleksi">Koleksi</router-link></li>
       </ol>
     </nav>
     <div class="col-sm-6">
       <div class="list-group position-sticky rounded" style="top: 100px">
         <h3>Setting</h3>
         <router-link :to="{ name: 'Detail Akun | Toko Buku Mentari' }" class="list-group-item list-group-item-action" aria-current="true" @click="isProfile = true"> Detail Profil </router-link>
-        <!-- <a href="#" class="list-group-item list-group-item-action">Ubah kata sandi</a> -->
         <router-link :to="{ name: 'Ubah Kata Sandi | Toko Buku Mentari' }" class="list-group-item list-group-item-action" @click="isProfile = false">Ubah Kata Sandi</router-link>
         <button class="btn btn-danger mt-5" @click="logout">Logout</button>
       </div>

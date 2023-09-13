@@ -4,20 +4,19 @@
       <img class="col-md-4 m-auto navbar__logo object-fit-contain" src="/images/logo.webp" style="width: 300px" />
       <i class="fa-solid fa-bars d-block d-sm-none fs-1 text-center font-pink mb-3" @click="isHamburgerActive === false ? (isHamburgerActive = true) : (isHamburgerActive = false)" style="cursor: pointer"></i>
       <div class="col-md-8 navbar__list d-flex align-items-center flex-column flex-md-row hamburger-menu" :class="{ toggle: isHamburgerActive }">
-        <a href="/"><i class="fa-solid fa-house font-pink mx-2 navbar__list-link"></i></a>
+        <router-link to="/"><i class="fa-solid fa-house font-pink mx-2 navbar__list-link"></i></router-link>
         <form @submit.prevent="goToCollection" class="input-group navbar__list-form navbar__list-link mx-2">
           <span class="input-group-text rounded-start-pill" id="basic-addon1"> <i class="fa-solid fa-magnifying-glass" style="color: #555555"></i> </span>
           <input type="text" class="form-control rounded-end-pill" placeholder="cari judul, penulis, atau genre" aria-label="Username" aria-describedby="basic-addon1" v-model="setKeyword.keyword" @keyup="sendEmit" />
         </form>
-        <a href="/keranjang" v-if="isLogin" class="cart mx-2 d-flex align-items-center">
+        <router-link to="/keranjang" v-if="isLogin" class="cart mx-2 d-flex align-items-center">
           <p v-if="getuser.cart.length > 0" class="rounded-pill d-inline m-0 p-1 text-white bg-pink">{{ getuser.cart.length }}</p>
           <i class="fa-solid fa-cart-shopping navbar__list-link font-pink"></i>
-        </a>
-        <!-- <a href="/login" class="btn btn-primary mx-2">Masuk</a> -->
-        <a href="/detailakun" v-if="isLogin" class="font-pink">
+        </router-link>
+        <router-link to="/detailakun" v-if="isLogin" class="font-pink">
           <i v-if="!imgAvb" class="fa-solid fa-user"></i>
           <img :src="getImage" alt="foto profil" width="30" height="30" class="rounded-circle object-fit-cover" />
-        </a>
+        </router-link>
         <div v-else class="d-flex gap-1">
           <router-link to="/login" class="btn btn-primary">Masuk</router-link>
           <router-link to="/register" class="btn btn-outline-primary">Daftar</router-link>
@@ -56,41 +55,6 @@ const emits = defineEmits(["search"]);
 function sendEmit() {
   emits("search", setKeyword);
 }
-// export default {
-//   name: "nav-bar",
-//   emits: ["cariBuku"],
-//   data() {
-//     return {
-//       // active: false,
-//       setKeyword: "",
-//       // itemAmount: null,
-//     };
-//   },
-//   methods: {
-//     hamburgerBtn() {
-//       document.querySelector(".hamburger-menu").classList.toggle("toggle");
-//     },
-//     searchBook() {
-//       this.$router.push({ name: "Koleksi | Toko Buku Mentari", query: { keyword: this.setKeyword } });
-//     },
-//   },
-//   setup() {
-//     const authStore = useAuthStore();
-//     const imgAvb = computed(() => {
-//       return authStore.isImageAvailable;
-//     });
-//     const getUser = computed(() => {
-//       return authStore.userDetail;
-//     });
-//     const getImage = computed(() => {
-//       return authStore.getUserImage;
-//     });
-//     const isLogin = computed(() => {
-//       return authStore.getIsLogin;
-//     });
-//     return { isLogin, getUser, imgAvb, getImage };
-//   },
-// };
 </script>
 <style scoped>
 @media screen and (max-width: 480px) {
