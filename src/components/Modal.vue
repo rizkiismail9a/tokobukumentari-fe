@@ -1,7 +1,7 @@
 <template>
   <div class="modal-wrapper m-auto">
     <div class="container position-sticky my-5">
-      <div class="modal-content w-50 position-relative card m-auto rounded p-5">
+      <div class="modal-content position-relative card m-auto rounded p-5">
         <h1 class="position-absolute" style="right: 20px; top: 0; cursor: pointer" @click="$emit('close')">&times;</h1>
         <img src="/images/welldone.webp" alt="berhasil" class="rounded w-50 m-auto" />
         <h3 class="fs-3 m-auto text-center">{{ modalMsg }}</h3>
