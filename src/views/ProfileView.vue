@@ -9,7 +9,7 @@
       </ol>
     </nav>
     <div class="col-sm-6">
-      <div class="list-group position-sticky rounded" style="top: 100px">
+      <div class="list-group position-sticky rounded" style="top: 80px">
         <h3>Setting</h3>
         <router-link :to="{ name: 'Detail Akun | Toko Buku Mentari' }" class="list-group-item list-group-item-action" aria-current="true" @click="isProfile = true"> Detail Profil </router-link>
         <router-link :to="{ name: 'Ubah Kata Sandi | Toko Buku Mentari' }" class="list-group-item list-group-item-action" @click="isProfile = false">Ubah Kata Sandi</router-link>
